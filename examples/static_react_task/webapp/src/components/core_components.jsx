@@ -5,6 +5,7 @@
  */
 
 import React from "react";
+import Form from "./Form.jsx";
 
 function OnboardingComponent({ onSubmit }) {
   return (
@@ -60,38 +61,8 @@ function Directions({ children }) {
 
 function SimpleFrontend({ taskData, isOnboarding, onSubmit, onError }) {
   return (
-    <div>
-      <Directions>
-        Directions: Please rate the below sentence as good or bad.
-      </Directions>
-      <section className="section">
-        <div className="container">
-          <p className="subtitle is-5"></p>
-          <p className="title is-3 is-spaced" data-cy="task-data-text">
-            {taskData.text}
-          </p>
-          <div className="field is-grouped">
-            <div className="control">
-              <button
-                data-cy="good-button"
-                className="button is-success is-large"
-                onClick={() => onSubmit({ rating: "good" })}
-              >
-                Mark as Good
-              </button>
-            </div>
-            <div className="control">
-              <button
-                data-cy="bad-button"
-                className="button is-danger is-large"
-                onClick={() => onSubmit({ rating: "bad" })}
-              >
-                Mark as Bad
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+    <div style={{ padding: "50px" }}>
+      <Form taskData={taskData} submit={onSubmit} />
     </div>
   );
 }

@@ -1,7 +1,17 @@
 #!/bin/sh
 
-# Copyright (c) Meta Platforms and its affiliates.
-# This source code is licensed under the MIT license found in the
-# LICENSE file in the root directory of this source tree.
+rm -rf node_modules
+rm package-lock.json
+current_dir=$(pwd)
 
-npm link mephisto-task
+# Link the mephisto-task package
+cd /mephisto/packages/mephisto-task
+npm link
+
+# Link the annotator-tracker package
+cd ../annotated/annotator-tracker
+npm link
+
+cd $current_dir
+npm link mephisto-task @annotated/annotator-tracker
+npm install

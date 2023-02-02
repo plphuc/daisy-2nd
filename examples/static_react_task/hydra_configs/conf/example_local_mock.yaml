@@ -11,15 +11,16 @@ defaults:
 
 mephisto:
   blueprint:
+    data_json: ${task_dir}/kg_formatted.json
     task_source: ${task_dir}/webapp/build/bundle.js
-    link_task_source: false
+    link_task_source: true
     extra_source_dir: ${task_dir}/webapp/src/static
-    units_per_assignment: 1
+    units_per_assignment: 3
   task:
-    task_name: react-static-task-example
-    task_title: "Rating a sentence as good or bad"
-    task_description: "In this task, you'll be given a sentence. It is your job to rate it as either good or bad."
-    task_reward: 0.05
-    task_tags: "test,simple,button"
+    task_name: find-precise-values-in-contact-number
+    task_title: "Find Precise Values in Contact Number"
+    task_description: "You will be asked to read the training materials about precise values and to consume the content (e.g., learning the definition, examples, and explanantion). Then, based on what you have learned, you will be asked to find the most precise values of contact numbers."
+    task_reward: 0.15
+    task_tags: "precise values, contact number, format"
     # We expect to be able to handle 300 concurrent tasks without issue
     max_num_concurrent_units: 300

@@ -46,27 +46,6 @@ def handle_onboarding(onboarding_data):
 @task_script(default_config_file="example_local_mock.yaml")
 def main(operator: Operator, cfg: DictConfig) -> None:
     is_using_screening_units = cfg.mephisto.blueprint["use_screening_task"]
-    shared_state = SharedStaticTaskState(
-        static_task_data=[
-            {"text": "This text is good text!"},
-            {"text": "This text is bad text!"},
-        ],
-        validate_onboarding=handle_onboarding,
-    )
-
-    if is_using_screening_units:
-        """
-        When using screening units there has to be a
-        few more properties set on shared_state
-        """
-        shared_state.on_unit_submitted = ScreenTaskRequired.create_validation_function(
-            cfg.mephisto,
-            validate_screening_unit,
-        )
-        shared_state.screening_data_factory = my_screening_unit_generator()
-        shared_state.qualifications += ScreenTaskRequired.get_mixin_qualifications(
-            cfg.mephisto, shared_state
-        )
 
     task_dir = cfg.task_dir
 
@@ -76,7 +55,7 @@ def main(operator: Operator, cfg: DictConfig) -> None:
         post_install_script=cfg.mephisto.task.post_install_script,
     )
 
-    operator.launch_task_run(cfg.mephisto, shared_state)
+    operator.launch_task_run(cfg.mephisto)
     operator.wait_for_runs_then_shutdown(skip_input=True, log_rate=30)
 
 

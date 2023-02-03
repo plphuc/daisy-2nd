@@ -61,7 +61,13 @@ function MainApp() {
               algorithms do. Please read the following questions carefully and
               make your decision (selection). You will receive the credit for
               performing our task. Information sheet:{" "}
-              <link>http://143.244.201.53:9000/infoSheet/</link>.
+              <a
+                href={"http://143.244.201.53:9000/infoSheet/"}
+                target={"_blank"}
+              >
+                http://143.244.201.53:9000/infoSheet/
+              </a>
+              .
             </p>
           </div>
           <ActivityTrackerDisclosure title={"Data we will collect"}>

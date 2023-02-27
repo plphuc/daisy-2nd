@@ -5,7 +5,6 @@
  */
 
 import React from "react";
-import Form from "./Form.jsx";
 
 function OnboardingComponent({ onSubmit }) {
   return (
@@ -60,11 +59,7 @@ function Directions({ children }) {
 }
 
 function SimpleFrontend({ taskData, isOnboarding, onSubmit, onError }) {
-  return (
-    <div style={{ padding: "50px" }}>
-      <Form taskData={taskData} submit={onSubmit} />
-    </div>
-  );
+  return <div style={{ padding: "50px" }}>This is sample task</div>;
 }
 
 export { LoadingScreen, SimpleFrontend as BaseFrontend, OnboardingComponent };

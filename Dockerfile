@@ -1,13 +1,25 @@
-# Using the -slim version below for minimal size. You may want to
-# remove -slim, or switch to -alpine if encountering issues
-ARG BASE_TAG=python3.9-nodejs16-slim
-ARG BASE_IMAGE=nikolaik/python-nodejs:$BASE_TAG
+FROM ubuntu:20.04
 
-FROM $BASE_IMAGE
+ENV DEBIAN_FRONTEND=noninteractive
+
+# INSTALL REQUIRED PACKAGES
+RUN apt-get update -y && apt-get install -y python3.9 python3-pip curl wget software-properties-common
+RUN apt-add-repository ppa:git-core/ppa
+RUN apt-get update -y && apt-get install -y git
+RUN pip3 install --upgrade pip
+
+SHELL ["/bin/bash", "--login", "-i", "-c"]
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+RUN source /root/.bashrc && nvm install 15.14.0 && nvm use 15.14.0
+ENV PATH="/root/.nvm/versions/node/v15.14.0/bin:${PATH}"
+RUN npm install -g npm
+RUN npm install -g heroku
+RUN npm install -g yarn
 
 # ec2 architect requires `ssh-keygen` util, so we need to install it.
 # Firstly, remove `yarn` repo as it causes error that stops building a container. Error:
 # (Error: The repository 'https://dl.yarnpkg.com/debian stable InRelease' is not signed)
+RUN rm /etc/apt/sources.list.d/yarn.list
 RUN apt update
 RUN apt install keychain -y
 
@@ -15,7 +27,7 @@ COPY . /mephisto
 RUN mkdir ~/.mephisto
 
 # Create the main Mephisto data directory
-RUN mkdir -p /mephisto/data
+# RUN mkdir /mephisto/data
 
 # Write the mephisto config file manually for now to avoid prompt.
 # For bash-style string $ expansion for newlines,
@@ -23,9 +35,6 @@ RUN mkdir -p /mephisto/data
 SHELL ["/bin/bash", "-c"]
 RUN echo $'core: \n  main_data_directory: /mephisto/data' >> ~/.mephisto/config.yml
 
-# Upgrade pip so we can use the pyproject.toml configuration
-# without raising an error
-RUN pip install --upgrade pip
-RUN cd /mephisto && pip install -e .
-RUN mephisto check # Run mephisto check so a mock requester gets created
-CMD mephisto check
+RUN cd /mephisto && pip3 install -e .
+
+CMD bash -c "sleep infinity"

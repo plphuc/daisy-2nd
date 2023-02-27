@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  mephisto-service:
+    container_name: mephisto-service
+    build:
+      context: .
+    command: bash -c "sleep infinity"
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/mephisto:cached

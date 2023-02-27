@@ -4,8 +4,13 @@ rm -rf node_modules
 rm package-lock.json
 current_dir=$(pwd)
 
+# Install all dependencies
+cd /mephisto
+yarn install
+yarn build-all
+
 # Link the mephisto-task package
-cd ~/Mephisto/packages/mephisto-task
+cd /mephisto/packages/mephisto-task
 npm link
 
 # Link the annotator-tracker package

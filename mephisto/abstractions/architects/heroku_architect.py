@@ -231,7 +231,9 @@ class HerokuArchitect(Architect):
             glob.glob(os.path.join(HEROKU_TMP_DIR, "heroku-cli-*"))[0]
         )
         heroku_directory_path = os.path.join(HEROKU_TMP_DIR, heroku_directory_name)
-        return os.path.join(heroku_directory_path, "bin", "heroku")
+        path = os.path.join(os.path.dirname(shutil.which("heroku")), "heroku")
+        print(path)
+        return path
 
     @staticmethod
     def get_user_identifier() -> Tuple[str, str]:

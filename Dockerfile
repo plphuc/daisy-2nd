@@ -1,20 +1,25 @@
-FROM ubuntu:20.04
+FROM alpine
 
-ENV DEBIAN_FRONTEND=noninteractive
+RUN apk update
+RUN apk upgrade
+RUN apk add --update --no-cache bash
+
+SHELL ["/bin/bash", "-c"]
 
 # INSTALL REQUIRED PACKAGES
-RUN apt-get update -y && apt-get install -y python3.9 python3-pip curl wget software-properties-common
-RUN apt-add-repository ppa:git-core/ppa
-RUN apt-get update -y && apt-get install -y git
-RUN pip3 install --upgrade pip
+ENV PYTHONUNBUFFERED=1
+RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
+RUN python3 -m ensurepip
+RUN pip3 install --no-cache --upgrade pip setuptools
 
-SHELL ["/bin/bash", "--login", "-i", "-c"]
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
-RUN source /root/.bashrc && nvm install 15.14.0 && nvm use 15.14.0
-ENV PATH="/root/.nvm/versions/node/v15.14.0/bin:${PATH}"
-RUN npm install -g npm
-RUN npm install -g heroku
-RUN npm install -g yarn
+RUN apk add --update --no-cache git
+
+# Install node and npm
+RUN apk add --update nodejs npm
+RUN npm install -g npm && \
+    npm update -g npm && \
+    npm install -g yarn heroku
+
 
 # ec2 architect requires `ssh-keygen` util, so we need to install it.
 # Firstly, remove `yarn` repo as it causes error that stops building a container. Error:
@@ -27,12 +32,12 @@ COPY . /mephisto
 RUN mkdir ~/.mephisto
 
 # Create the main Mephisto data directory
-# RUN mkdir /mephisto/data
+RUN mkdir -p /mephisto/data
 
+SHELL ["/bin/bash", "-c"]
 # Write the mephisto config file manually for now to avoid prompt.
 # For bash-style string $ expansion for newlines,
 # we need to switch the shell to bash:
-SHELL ["/bin/bash", "-c"]
 RUN echo $'core: \n  main_data_directory: /mephisto/data' >> ~/.mephisto/config.yml
 
 RUN cd /mephisto && pip3 install -e .

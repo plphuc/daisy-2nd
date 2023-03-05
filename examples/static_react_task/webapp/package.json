@@ -14,7 +14,8 @@
     "bootstrap": "^4.3.1",
     "mephisto-task": "2.0.4",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "@annotated/annotator-tracker": "0.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.0",

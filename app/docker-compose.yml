@@ -5,8 +5,10 @@ services:
     container_name: mephisto-service
     build:
       context: .
-    command: bash -c "sleep infinity"
+      dockerfile: Dockerfile.dev
+    command: ["python3", "run_task.py"]
     ports:
       - 3000:3000
     volumes:
-      - .:/mephisto:cached
+      - .:/mephisto/app:cached
+      - ./data:/mephisto/data:cached

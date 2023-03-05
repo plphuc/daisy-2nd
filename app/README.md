@@ -20,6 +20,20 @@ or by specifying the config file that already has this set:
 python run_task.py conf=onboarding_example_local_mock
 ```
 
+## Docker-compose for local dev
+Prerequisite:
++ Docker
++ Docker compose
+
+Run:
+```console
+docker-compose up 
+```
+rebuild frontend task:
+```console
+docker exec -it mephisto-service sh -c "cd webapp && npm run dev:watch" 
+```
+
 ## Implementation
 ### Configuration
 This task is configured using [Hydra](https://hydra.cc/) - details about using hydra to configure tasks can be read here and in other examples. For more about being able to customize the configuration files, please refer to the [Hydra documentation](https://hydra.cc/docs/intro). Under our current setup, using Hydra means that you must be in the same directory as the python script for hydra to correctly pick up the config files.

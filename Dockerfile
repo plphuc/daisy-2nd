@@ -2,7 +2,8 @@ FROM alpine
 
 RUN apk update
 RUN apk upgrade
-RUN apk add --update --no-cache bash
+RUN apk add --update --no-cache bash build-base gcc musl-dev python3-dev
+RUN apk add --no-cache gcc g++ py-pip mysql-dev linux-headers libffi-dev openssl-dev
 
 SHELL ["/bin/bash", "-c"]
 
@@ -40,6 +41,10 @@ SHELL ["/bin/bash", "-c"]
 # we need to switch the shell to bash:
 RUN echo $'core: \n  main_data_directory: /mephisto/data' >> ~/.mephisto/config.yml
 
-RUN cd /mephisto && pip3 install -e .
+WORKDIR /mephisto
+RUN pip3 install -e .
+
+RUN yarn install
+RUN yarn build-all
 
 CMD bash -c "sleep infinity"

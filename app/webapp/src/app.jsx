@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import {
   BaseFrontend,
   OnboardingComponent,
@@ -122,4 +122,9 @@ function MainApp() {
   );
 }
 
-ReactDOM.render(<MainApp />, document.getElementById("app"));
+const root = ReactDOM.createRoot(document.getElementById("app"));
+root.render(
+  <React.StrictMode>
+    <MainApp />
+  </React.StrictMode>
+);

@@ -59,7 +59,15 @@ function Directions({ children }) {
 }
 
 function SimpleFrontend({ taskData, isOnboarding, onSubmit, onError }) {
-  return <div style={{ padding: "50px" }}>This is sample task</div>;
+  return (
+    <div style={{ padding: "50px" }}>
+      <button className="btn btn-outline">Button</button>
+      <button className="btn btn-outline btn-primary">Button</button>
+      <button className="btn btn-outline btn-secondary">Button</button>
+      <button className="btn btn-outline btn-accent">Button</button>
+      This is some text.
+    </div>
+  );
 }
 
 export { LoadingScreen, SimpleFrontend as BaseFrontend, OnboardingComponent };

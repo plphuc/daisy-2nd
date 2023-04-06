@@ -47,7 +47,7 @@ jobs:
           # ssh password
           key: ${{ secrets.PRIVATE_KEY }}
           # execute commands
-          script: cd ${{ env.REPO_DIR }} && bash ./scripts/build-container.sh ${{ env.REPO_DIR }} ${{ env.APP_NAME }} ${{ env.USER_EMAIL }} ${{ env.USER_NAME }} ${{ secrets.HEROKU_API_KEY }} ${{ env.MTURK_TYPE }} ${{ env.MTURK_NAME }} ${{ secrets.MTURK_ACCESS_KEY_ID }} ${{ secrets.MTURK_SECRET_ACCESS_KEY }} ${{ secrets.DOTNETRC }}
+          script: cd ${{ env.REPO_DIR }} && bash ./scripts/build-container.sh ${{ env.REPO_DIR }} ${{ env.APP_NAME }} ${{ env.USER_EMAIL }} ${{ env.USER_NAME }} ${{ secrets.HEROKU_API_KEY }} ${{ env.MTURK_TYPE }} ${{ env.MTURK_NAME }} ${{ secrets.MTURK_ACCESS_KEY_ID }} ${{ secrets.MTURK_SECRET_ACCESS_KEY }} ${{ secrets.DOTNETRC }} deploy_prod.py
 
   run-container:
     name: run-container

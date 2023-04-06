@@ -1,6 +1,7 @@
 import React from "react";
-
-const KEY = "annotator.tracker";
+import IndexedDBWrapper from "./indexed-db-wrapper";
+const DB_NAME = "annotator.tracker";
+const DB_STORE_NAME = "annotator.tracker";
 
 export function pythonTime() {
   return Date.now() / 1000;
@@ -11,6 +12,19 @@ const useAnnotatorTracker = function (
   isLoading,
   logRate = 5000
 ) {
+  const db = new IndexedDBWrapper(DB_NAME, 1, (event) => {
+      const objectStore = event.target.result.createObjectStore(DB_STORE_NAME, {
+          keyPath: "id",
+          autoIncrement:true
+      });
+      objectStore.createIndex("timestamp", "timestamp", {
+          unique: false,
+      });
+      objectStore.createIndex("userId", "userId", { unique: false });
+      objectStore.createIndex("type", "type", { unique: false });
+      objectStore.createIndex("data", "data", { unique: false });
+  });
+
   const handleBehaviorsSubmit = React.useCallback(
     (behaviors) => {
       handleMetadataSubmit({
@@ -27,9 +41,9 @@ const useAnnotatorTracker = function (
       type,
       time: pythonTime(),
     };
-    const behaviors = JSON.parse(localStorage.getItem(KEY) || "[]");
-    behaviors.push(behavior);
-    localStorage.setItem(KEY, JSON.stringify(behaviors));
+
+    db.add(DB_STORE_NAME, [behavior]);
+
   }, []);
 
   const addListener = React.useCallback((targets, action, handler) => {
@@ -58,7 +72,6 @@ const useAnnotatorTracker = function (
     });
 
     const handleMouseClick = (event) => {
-      event.stopPropagation();
       cacheBehaviors("window_click", {
         event_x: event.pageX,
         event_y: event.pageY,
@@ -66,19 +79,25 @@ const useAnnotatorTracker = function (
     };
     window.addEventListener("click", handleMouseClick);
 
-    let scrollLock = false;
-    const handleMouseScroll = () => {
-      if (!scrollLock) {
-        setTimeout(function () {
-          cacheBehaviors("window_scroll", {
-            scroll_x: window.scrollX,
-            scroll_y: window.scrollY,
-          });
-          scrollLock = false;
-        }, 1000);
-      }
-      scrollLock = true;
-    };
+    function debounce(fn, delay) {
+      let timer = null;
+      return function () {
+        let context = this;
+        let args = arguments;
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          fn.apply(context, args);
+        }, delay);
+      };
+    } 
+
+    const scrollHandler = debounce(function(){
+            cacheBehaviors("window_scroll", {
+                        scroll_x: window.scrollX,
+                        scroll_y: window.scrollY,
+            });
+    }, 1000);
+    const handleMouseScroll = (e)=>{ scrollHandler() };
     window.addEventListener("scroll", handleMouseScroll);
 
     const handleVisibilityChange = () => {
@@ -96,7 +115,7 @@ const useAnnotatorTracker = function (
   }, [cacheBehaviors]);
 
   React.useLayoutEffect(() => {
-    const removeAllFocusListeners = addListener(
+        const removeAllFocusListeners = addListener(
       Array.from(document.getElementsByTagName("*")),
       "focus",
       (event) => {
@@ -104,6 +123,7 @@ const useAnnotatorTracker = function (
           element_tag: event.target.tagName,
           element_name: event.target.name,
           element_id: event.target.id,
+          outerHtml: event.target.outerHTML,
         });
       }
     );
@@ -113,6 +133,7 @@ const useAnnotatorTracker = function (
       "change",
       (event) => {
         cacheBehaviors("select_change", {
+          outerHtml: event.target.outerHTML,
           element_tag: event.target.tagName,
           element_name: event.target.name,
           element_id: event.target.id,
@@ -127,6 +148,7 @@ const useAnnotatorTracker = function (
       "click",
       (event) => {
         cacheBehaviors("button_click", {
+          outerHtml: event.target.outerHTML,
           button: event.target.innerText,
         });
       }
@@ -141,6 +163,7 @@ const useAnnotatorTracker = function (
       "click",
       (event) => {
         cacheBehaviors("input_click", {
+          outerHtml: event.target.outerHTML,
           element_tag: event.target.tagName,
           element_name: event.target.name,
           element_id: event.target.id,
@@ -166,6 +189,7 @@ const useAnnotatorTracker = function (
           (specialKey.includes(currentKey) && currentKey !== prevKey)
         ) {
           cacheBehaviors("input_keyup", {
+            outerHtml: event.target.outerHTML,
             element_tag: event.target.tagName,
             element_name: event.target.name,
             element_id: event.target.id,
@@ -188,6 +212,7 @@ const useAnnotatorTracker = function (
       "blur",
       (event) => {
         cacheBehaviors("input_blur", {
+          outerHtml: event.target.outerHTML,
           element_tag: event.target.tagName,
           element_name: event.target.name,
           element_id: event.target.id,
@@ -208,6 +233,7 @@ const useAnnotatorTracker = function (
       "paste",
       (event) => {
         cacheBehaviors("input_paste", {
+          outerHtml: event.target.outerHTML,
           element_tag: event.target.tagName,
           element_name: event.target.name,
           element_id: event.target.id,
@@ -230,6 +256,7 @@ const useAnnotatorTracker = function (
         const startPos = event.target.selectionStart;
         const endPos = event.target.selectionEnd;
         cacheBehaviors("input_cut", {
+          outerHtml: event.target.outerHTML,
           element_tag: event.target.tagName,
           element_name: event.target.name,
           element_id: event.target.id,
@@ -263,11 +290,11 @@ const useAnnotatorTracker = function (
     );
 
     const sendBehavior = () => {
-      const behaviors = JSON.parse(localStorage.getItem(KEY) || "[]");
-      if (behaviors.length > 0) {
-        handleBehaviorsSubmit(behaviors);
-        localStorage.removeItem(KEY);
-      }
+      db.popAll(DB_STORE_NAME).then((behaviors) => {
+        if (behaviors.length > 0) {
+          handleBehaviorsSubmit(behaviors);
+        }
+      });
     };
 
     window.addEventListener("beforeunload", sendBehavior);

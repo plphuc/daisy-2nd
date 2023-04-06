@@ -1,4 +1,4 @@
-name: Deployment - Test
+name: Deployment - Prod
 on:
   push:
     branches:
@@ -11,12 +11,12 @@ env:
   HOST: 34.116.70.140
   USERNAME: deployer
   PORT: 22
-  MTURK_NAME: my_mturk_user_sandbox
-  MTURK_TYPE: mturk_sandbox
+  MTURK_NAME: my_mturk_user
+  MTURK_TYPE: mturk
   USER_EMAIL: jaythaiduong.huynh@uq.edu.au
   USER_NAME: jaythaiduong.huynh
-  REPO_DIR: ~/${{ github.event.repository.name }}-${{ github.ref_name }}-test
-  APP_NAME: ${{ github.event.repository.name }}-${{ github.ref_name }}-test
+  REPO_DIR: ~/${{ github.event.repository.name }}-${{ github.ref_name }}-prod
+  APP_NAME: ${{ github.event.repository.name }}-${{ github.ref_name }}-prod
 
 jobs:
   build-container:

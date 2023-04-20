@@ -2,10 +2,10 @@ name: Deployment - Test
 on:
   push:
     branches:
-      - test
+      - deployment-test
   pull_request:
     branches:
-      - test
+      - deployment-test
 
 env:
   HOST: 34.116.70.140
@@ -15,8 +15,9 @@ env:
   MTURK_TYPE: mturk_sandbox
   USER_EMAIL: jaythaiduong.huynh@uq.edu.au
   USER_NAME: jaythaiduong.huynh
-  REPO_DIR: ~/${{ github.event.repository.name }}-${{ github.ref_name }}-test
-  APP_NAME: ${{ github.event.repository.name }}-${{ github.ref_name }}-test
+  REPO_DIR: ~/${{ github.event.repository.name }}-${{ github.ref_name }}
+  APP_NAME: ${{ github.event.repository.name }}-${{ github.ref_name }}
+  APP_ENV: test
 
 jobs:
   build-container:
@@ -34,7 +35,15 @@ jobs:
           # ssh password
           key: ${{ secrets.PRIVATE_KEY }}
           # execute commands
-          script: if cd ${{ env.REPO_DIR }}; then git pull || true; else mkdir -p ${{ env.REPO_DIR }} && cd ${{ env.REPO_DIR }} && git clone git@github.com:${{ github.repository }}.git ${{ env.REPO_DIR }} && git checkout ${{ github.ref_name }}; fi
+          script: > 
+            if [ -d ${{ env.REPO_DIR }} ];
+            then 
+              cd ${{ env.REPO_DIR }} && git pull || true; 
+            else 
+              mkdir -p ${{ env.REPO_DIR }} && cd ${{ env.REPO_DIR }};
+              git clone git@github.com:${{ github.repository }}.git ${{ env.REPO_DIR }};
+              git checkout ${{ github.ref_name }}; 
+            fi
 
       - uses: appleboy/ssh-action@v0.1.7
         with:
@@ -47,7 +56,19 @@ jobs:
           # ssh password
           key: ${{ secrets.PRIVATE_KEY }}
           # execute commands
-          script: cd ${{ env.REPO_DIR }} && bash ./scripts/build-container.sh ${{ env.REPO_DIR }} ${{ env.APP_NAME }} ${{ env.USER_EMAIL }} ${{ env.USER_NAME }} ${{ secrets.HEROKU_API_KEY }} ${{ env.MTURK_TYPE }} ${{ env.MTURK_NAME }} ${{ secrets.MTURK_ACCESS_KEY_ID }} ${{ secrets.MTURK_SECRET_ACCESS_KEY }} ${{ secrets.DOTNETRC }} deploy_sb.py
+          script: >
+            cd ${{ env.REPO_DIR }};
+            bash ./scripts/build-container.sh \
+              ${{ env.REPO_DIR }} \
+              ${{ env.APP_NAME }} \
+              ${{ env.USER_EMAIL }} \
+              ${{ env.USER_NAME }} \
+              ${{ secrets.HEROKU_API_KEY }} \
+              ${{ env.MTURK_TYPE }} \
+              ${{ env.MTURK_NAME }} \
+              ${{ secrets.MTURK_ACCESS_KEY_ID }} \
+              ${{ secrets.MTURK_SECRET_ACCESS_KEY }} \
+              ${{ secrets.DOTNETRC }}
 
   run-container:
     name: run-container
@@ -65,4 +86,10 @@ jobs:
           # ssh password
           key: ${{ secrets.PRIVATE_KEY }}
           # execute commands
-          script: cd ${{ env.REPO_DIR }} && docker run -d --rm --init -v ${{ env.APP_NAME }}-volume:/mephisto/data --name ${{ env.APP_NAME }} -e HEROKU_API_KEY=${{ secrets.HEROKU_API_KEY }} ${{ env.APP_NAME }} && timeout 180 sh -c "while ! docker logs -f $(docker ps -q --filter ancestor=${{ env.APP_NAME }} --format="{{.ID}}")| grep -q 'https://workersandbox.mturk.com/mturk/preview?groupId'; do sleep 1; done" && docker logs --tail=10 $(docker ps -q --filter ancestor=${{ env.APP_NAME }} --format="{{.ID}}")
+          script: >
+            cd ${{ env.REPO_DIR }}; 
+            bash ./scripts/run-container.sh \
+              ${{ env.APP_NAME }} \
+              ${{ secrets.HEROKU_API_KEY }} \
+              ${{ env.APP_ENV }} \
+              "https://workersandbox.mturk.com/mturk/preview?groupId";

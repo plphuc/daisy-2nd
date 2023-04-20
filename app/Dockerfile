@@ -9,9 +9,6 @@ ARG MTURK_ACCESS_KEY_ID
 ARG MTURK_SECRET_ACCESS_KEY
 
 ARG DOTNETRC
-ARG HEROKU_API_KEY
-ARG SCRIPT
-ENV HEROKU_API_KEY $HEROKU_API_KEY
 
 SHELL ["/bin/bash", "-c"]
 
@@ -35,4 +32,4 @@ WORKDIR webapp
 RUN ./link_mephisto_task.sh
 WORKDIR ..
 
-CMD ["python3", "$SCRIPT"]
+CMD yes '\n' | yes 'y\n' | python3 deploy.py

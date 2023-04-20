@@ -15,6 +15,17 @@ from mephisto.abstractions.blueprints.abstract.static_task.static_blueprint impo
 )
 from rich import print
 from omegaconf import DictConfig
+import os
+
+env = os.environ.get("APP_ENV", "")
+
+default_config_file = "example.yaml"
+if env == "prod":
+    default_config_file = "example_prod.yaml"
+elif env == "test" or env == "sb":
+    default_config_file = "example_sb.yaml"
+elif env == "dev":
+    default_config_file = "example_dev.yaml"
 
 
 def my_screening_unit_generator():
@@ -43,8 +54,10 @@ def handle_onboarding(onboarding_data):
     return False
 
 
-@task_script(default_config_file="example_prod.yaml")
+@task_script(default_config_file=default_config_file)
 def main(operator: Operator, cfg: DictConfig) -> None:
+    task_name = cfg.mephisto.task.get("task_name", None)
+
     is_using_screening_units = cfg.mephisto.blueprint["use_screening_task"]
 
     task_dir = cfg.task_dir

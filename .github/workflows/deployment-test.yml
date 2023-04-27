@@ -15,8 +15,8 @@ env:
   MTURK_TYPE: mturk_sandbox
   USER_EMAIL: jaythaiduong.huynh@uq.edu.au
   USER_NAME: jaythaiduong.huynh
-  REPO_DIR: ~/${{ github.event.repository.name }}-${{ github.ref_name }}
-  APP_NAME: ${{ github.event.repository.name }}-${{ github.ref_name }}
+  REPO_DIR: ~/${{ github.event.repository.name }}-${{ github.ref_name }}-test
+  APP_NAME: ${{ github.event.repository.name }}-${{ github.ref_name }}-test
   APP_ENV: test
 
 jobs:

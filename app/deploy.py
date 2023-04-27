@@ -23,9 +23,7 @@ default_config_file = "example.yaml"
 if env == "prod":
     default_config_file = "example_prod.yaml"
 elif env == "test" or env == "sb":
-    default_config_file = "example_sb.yaml"
-elif env == "dev":
-    default_config_file = "example_dev.yaml"
+    default_config_file = "example_test.yaml"
 
 
 def my_screening_unit_generator():

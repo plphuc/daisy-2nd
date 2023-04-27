@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    command: ["python3", "run_task.py"]
+    command: ["python3", "deploy.py"]
     ports:
       - 3000:3000
     volumes:

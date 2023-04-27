@@ -39,9 +39,9 @@ def validate_screening_unit(unit: Unit):
         data = agent.state.get_data()
         print(data)
         if (
-            data["outputs"] is not None
-            and "rating" in data["outputs"]
-            and data["outputs"]["rating"] == "bad"
+                data["outputs"] is not None
+                and "rating" in data["outputs"]
+                and data["outputs"]["rating"] == "bad"
         ):
             # User pressed the red button
             return True
@@ -68,8 +68,16 @@ def main(operator: Operator, cfg: DictConfig) -> None:
         post_install_script=cfg.mephisto.task.post_install_script,
     )
 
-    operator.launch_task_run(cfg.mephisto)
-    operator.wait_for_runs_then_shutdown(skip_input=True, log_rate=30)
+    try:
+        operator.launch_task_run(cfg.mephisto)
+        operator.wait_for_runs_then_shutdown(skip_input=True, log_rate=30)
+    finally:
+        exec_parse_data_script()
+
+
+def exec_parse_data_script():
+    # run clean_up.sh script, the script is in the same directory as this file
+    os.system(f"sh {os.path.dirname(os.path.realpath(__file__))}/clean_up.sh")
 
 
 if __name__ == "__main__":

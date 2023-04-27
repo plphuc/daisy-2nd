@@ -15,4 +15,4 @@ WORKDIR webapp
 RUN ./link_mephisto_task.sh
 WORKDIR ..
 
-CMD ["python3", "run_task.py"]
+CMD ["python3", "deploy.py"]

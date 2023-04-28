@@ -86,6 +86,7 @@ jobs:
           # ssh password
           key: ${{ secrets.PRIVATE_KEY }}
           # execute commands
+          command_timeout: 30m
           script: >
             cd ${{ env.REPO_DIR }}; 
             bash ./scripts/run-container.sh \

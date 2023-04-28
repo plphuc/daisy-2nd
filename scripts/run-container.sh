@@ -16,4 +16,4 @@ timeout 1800 \
             do sleep 1; done";
 
 
-docker logs --tail=10 $(docker ps -q --filter ancestor=$APP_NAME --format="{{.ID}}");
+docker logs $(docker ps -q --filter ancestor=$APP_NAME --format="{{.ID}}");

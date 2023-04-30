@@ -12,7 +12,7 @@ python_exec=$(which python3)
 
 csv_path=$(echo $task_path | sed 's/NO_PROJECT/parsed/g')".csv"
 
-cd $mephisto_script_root/mephisto-data-parser
+cd $mephisto_script_root/mephisto-data-parser/src
 
 echo "Running data parser on task: $task_path"
 

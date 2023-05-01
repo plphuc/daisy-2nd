@@ -11,7 +11,7 @@ MTURK_ACCESS_KEY_ID=${8:?"Specify 'MTURK_ACCESS_KEY_ID' as argv[8]"}
 MTURK_SECRET_ACCESS_KEY=${9:?"Specify 'MTURK_SECRET_ACCESS_KEY' as argv[9]"}
 DOTNETRC=${10:?"Specify 'DOTNETRC' as argv[10]"}
 
-echo "REPO_DIR: $REPO_DIR"
+echo "REPO_DIR::: $REPO_DIR"
 echo "APP_NAME: $APP_NAME"
 
 cd $REPO_DIR && git pull

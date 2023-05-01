@@ -39,6 +39,26 @@ def CreateUserDirList(assignment_dir):
     return user_dir_list
 
 
+def CountUserHaveOutputs(user_df: DataFrame):
+    try:
+        results = user_df["user_status"].value_counts()[True]
+    except:
+        results = 0
+        return results
+
+    return results
+
+
+def CountUserDoNotHaveOutputs(user_df: DataFrame):
+    try:
+        results = user_df["user_status"].value_counts()[False]
+    except:
+        results = 0
+        return results
+
+    return results
+
+
 def GetOutputsResults(json_dir):
     try:
         file_dir = pathlib.PurePath(json_dir).joinpath("agent_data.json")
@@ -82,7 +102,7 @@ def CreateUserDataFrame(folder_link, database_path):
 
     user_data = {
         "user_id": [],
-        "task_id": [],
+        "assignment_id": [],
         "user_dir": [],
         "agent_data_dir": [],
         "agent_meta_dir": [],
@@ -91,49 +111,76 @@ def CreateUserDataFrame(folder_link, database_path):
         "data_base_status": [],
     }
 
-    for task_dir in task_dir_list:
-        user_dir_list = CreateUserDirList(task_dir)
-        for user_dir in user_dir_list:
-            user_data["user_id"].append(int(GetTaskOrUserNumber(user_dir)))
-            user_data["task_id"].append(int(GetTaskOrUserNumber(task_dir)))
-            user_data["user_dir"].append(user_dir)
-            user_data["agent_data_dir"].append(
-                pathlib.PurePath(user_dir).joinpath("agent_data.json")
+    for assignment_dir in task_dir_list:
+        user_dir_list = CreateUserDirList(assignment_dir)
+        if len(user_dir_list) == 0:
+            print(
+                f"No user detected for assignment {GetTaskOrUserNumber(assignment_dir)}"
             )
-            user_data["agent_meta_dir"].append(
-                pathlib.PurePath(user_dir).joinpath("agent_meta.json")
+            assign_data_file = pathlib.PurePath(assignment_dir).joinpath(
+                "assign_data.json"
             )
-            user_data["assign_data_dir"].append(
-                pathlib.PurePath(user_dir).joinpath("assign_data.json")
-            )
-            user_data["user_status"].append(GetOutputsResults(user_dir))
-            user_data["data_base_status"].append(
-                GetStatusOfAgentId(
-                    ConnectDatabse(database_path), GetTaskOrUserNumber(user_dir)
+            user_data["assign_data_dir"].append(assign_data_file)
+            user_data["user_id"].append("")
+            user_data["assignment_id"].append(int(GetTaskOrUserNumber(assignment_dir)))
+            user_data["user_dir"].append("")
+            user_data["agent_data_dir"].append("")
+            user_data["agent_meta_dir"].append("")
+            user_data["user_status"].append("")
+            user_data["data_base_status"].append("")
+        else:
+            for user_dir in user_dir_list:
+                assign_data_file = pathlib.PurePath(assignment_dir).joinpath(
+                    "assign_data.json"
                 )
-            )
+                user_data["assign_data_dir"].append(assign_data_file)
+                user_data["user_id"].append(int(GetTaskOrUserNumber(user_dir)))
+                user_data["assignment_id"].append(
+                    int(GetTaskOrUserNumber(assignment_dir))
+                )
+                user_data["user_dir"].append(user_dir)
+                agent_data_file = pathlib.PurePath(user_dir).joinpath("agent_data.json")
+                agent_meta_file = pathlib.PurePath(user_dir).joinpath("agent_meta.json")
+                if os.path.isfile(agent_data_file):
+                    user_data["agent_data_dir"].append(agent_data_file)
+                else:
+                    user_data["agent_data_dir"].append("")
+
+                if os.path.isfile(agent_meta_file):
+                    user_data["agent_meta_dir"].append(agent_meta_file)
+                else:
+                    user_data["agent_meta_dir"].append("")
+
+                user_data["user_status"].append(GetOutputsResults(user_dir))
+                user_data["data_base_status"].append(
+                    GetStatusOfAgentId(
+                        ConnectDatabse(database_path), GetTaskOrUserNumber(user_dir)
+                    )
+                )
 
     user_dataframe = pd.DataFrame(data=user_data)
 
-    sorted_user_dataframe = user_dataframe.sort_values("task_id")
+    sorted_user_dataframe = user_dataframe.sort_values("assignment_id")
 
     return sorted_user_dataframe
 
 
 def PrintTaskInformation(user_dataframe: DataFrame):
-    for task_id in list(user_dataframe["task_id"].unique()):
-        print(f"Task:{task_id}")
-        number_of_user = len(user_dataframe[user_dataframe["task_id"] == task_id])
+    for assignment_id in list(user_dataframe["assignment_id"].unique()):
+        print(f"Task:{assignment_id}")
+        number_of_user = len(
+            user_dataframe[user_dataframe["assignment_id"] == assignment_id]
+        )
         user_did_assignment = list(
             user_dataframe.loc[
-                (user_dataframe["task_id"] == task_id)
+                (user_dataframe["assignment_id"] == assignment_id)
                 & (user_dataframe["user_status"] == True)
             ]["user_id"]
         )
 
         user_did_not_do_assignment = list(
             user_dataframe.loc[
-                (user_dataframe["task_id"] == task_id)
+                (user_dataframe["assignment_id"] == assignment_id)
                 & (user_dataframe["user_status"] == False)
             ]["user_id"]
         )
@@ -141,3 +188,21 @@ def PrintTaskInformation(user_dataframe: DataFrame):
             f"Total agents: {number_of_user} - Agent did the assignment:{user_did_assignment}  - Agent did not do the assignment: {user_did_not_do_assignment} "
         )
     return
+
+
+def CountTotalAssignments(user_dataframe: DataFrame):
+    if all(item == "" for item in user_dataframe["assignment_id"]):
+        return 0
+
+    total_assignment = len(user_dataframe["assignment_id"].unique())
+
+    return total_assignment
+
+
+def CountTotalUser(user_dataframe: DataFrame):
+    if all(item == "" for item in user_dataframe["user_id"]):
+        return 0
+
+    total_user = user_dataframe["user_id"].count()
+
+    return total_user

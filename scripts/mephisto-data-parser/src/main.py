@@ -2,76 +2,61 @@ import pathlib
 from backend.task_user_data import *
 from backend.database_handle import *
 from backend.csv_handle import *
+import os
 import sys
-
 if __name__ == "__main__":
-    # Load data from .env file
+    args = sys.argv[1:]
+    # validate args
+    if len(args) != 3:
+        print("Please provide 3 arguments: folder_link, database_folder_path, csv_folder_path")
+        exit(1)
 
     # Folder link for tracking
-    user_input_path = sys.argv[1]
+    user_input_path = args[0]
 
     # Path to database
-    database_folder_path = sys.argv[2]
+    database_folder_path = args[1]
 
     # Path to export CSV
-    csv_folder_path = sys.argv[3]
+    csv_folder_path = args[2]
 
     folder_link = pathlib.PurePath(user_input_path)
     csv_folder = pathlib.Path(csv_folder_path)
 
     # Create a user data frame (5 columns: user_id, task_id, user_dir, agent_data_dir, user_status, user_status in database)
+
     user_dataframe = CreateUserDataFrame(folder_link, database_folder_path)
 
-    total_task = len(user_dataframe["task_id"].unique())
+    total_assigment = CountTotalAssignments(user_dataframe)
 
-    total_user = user_dataframe.count()[0]
-    if total_user == 0:
-        print("No user found in the database")
-        exit()
+    total_user = CountTotalUser(user_dataframe)
 
-    user_have_outputs = user_dataframe["user_status"].value_counts()[True]
+    user_have_outputs = CountUserHaveOutputs(user_dataframe)
 
-    user_do_not_have_outputs = user_dataframe["user_status"].value_counts()[False]
+    user_do_not_have_outputs = CountUserDoNotHaveOutputs(user_dataframe)
 
     # Create a dataframe for csv file include task_id, agent_id, agent_data_dir, agent_meta_dir
-    csv_dataframe = CreateCSVDataFrame(user_dataframe)
+    csv_dataframe, remaining_columns = CreateCSVDataFrame(user_dataframe)
 
-    # Add input to data frame
-    agent_data_dataframe = GetAgentsInput(csv_dataframe)
+    print(f"Total assignment: {total_assigment}")
 
-    # Add input to dataframe
+    if total_user != 0:
+        PrintTaskInformation(user_dataframe)
 
-    agent_data_dataframe = GetAgentsOutput(agent_data_dataframe)
+        print(f"Total user: {total_user}")
 
-    # Create dataframe for meta data
+        print(f"User that is snapped {GetSnappedUser(list(user_dataframe['user_id']))}")
 
-    agent_meta_dataframe = GetAgentMetaData(csv_dataframe)
+        print(
+            f"Number of user did the assignment: {user_have_outputs} - Account for: {round(user_have_outputs/total_user*100,2)}%"
+        )
+        print(
+            f"Number of user did not do the assignment: {user_do_not_have_outputs} - Account for: {round(user_do_not_have_outputs/total_user*100,2)}%"
+        )
+        CompareFolderWithDatabase(user_dataframe)
+    else:
+        print("No user detected")
 
-    # Create dataframe for assign data
-
-    assign_data_df = GetAssignData(csv_dataframe)
-
-    PrintTaskInformation(user_dataframe)
-
-    print(f"Total task: {total_task}")
-
-    print(f"Total user: {total_user}")
-
-    print(f"User that is snapped {GetSnappedUser(list(user_dataframe['user_id']))}")
-
-    print(
-        f"Number of user did the assignment: {user_have_outputs} - Account for: {round(user_have_outputs/total_user*100,2)}%"
-    )
-    print(
-        f"Number of user did not do the assignment: {user_do_not_have_outputs} - Account for: {round(user_do_not_have_outputs/total_user*100,2)}%"
-    )
-
-    CompareFolderWithDatabase(user_dataframe)
-
-    CreateCSVFile(agent_data_dataframe, csv_folder, "agent_data")
-
-    CreateCSVFile(agent_meta_dataframe, csv_folder, "agent_meta")
-
-    CreateCSVFile(assign_data_df, csv_folder, "assign_data")
+    PrintCSVFile(csv_dataframe, remaining_columns, csv_folder)
 
     print("CSV File Created !!!!")

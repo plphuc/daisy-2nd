@@ -6,15 +6,25 @@ import json
 
 def CreateCSVDataFrame(user_dataframe: DataFrame):
     agent_data = {
-        "task_id": [],
+        "assignment_id": [],
         "agent_id": [],
         "agent_data_dir": [],
         "agent_meta_dir": [],
         "assign_data_dir": [],
     }
 
+    if all(item == "" for item in user_dataframe["user_id"]):
+        cleaned_data = {"assign_data_dir": []}
+
+        for asignment_dir in user_dataframe["assign_data_dir"]:
+            cleaned_data["assign_data_dir"].append(asignment_dir)
+
+        cleaned_dataframe = pd.DataFrame(data=cleaned_data)
+        remained_columns = cleaned_dataframe.columns
+        return cleaned_dataframe, remained_columns
+
     for i in range(user_dataframe.shape[0]):
-        agent_data["task_id"].append(int(user_dataframe["task_id"][i]))
+        agent_data["assignment_id"].append(int(user_dataframe["assignment_id"][i]))
         agent_data["agent_id"].append(int(user_dataframe["user_id"][i]))
         agent_data["agent_data_dir"].append(user_dataframe["agent_data_dir"][i])
         agent_data["agent_meta_dir"].append(user_dataframe["agent_meta_dir"][i])
@@ -22,10 +32,56 @@ def CreateCSVDataFrame(user_dataframe: DataFrame):
 
     agent_data_dataframe = pd.DataFrame(data=agent_data)
     agent_data_dataframe.sort_values(
-        ["task_id", "agent_id"], ascending=[True, True], inplace=True
+        ["assignment_id", "agent_id"], ascending=[True, True], inplace=True
     )
 
-    return agent_data_dataframe
+    cleaned_dataframe, remained_columns = HandleCSVDataFrame(agent_data_dataframe)
+
+    return cleaned_dataframe, remained_columns
+
+
+def HandleCSVDataFrame(csv_dataframe: DataFrame):
+    remaining_columns = []
+    outputs_df = pd.DataFrame.assign(csv_dataframe)
+
+    # Loop through each column of the DataFrame
+    for column in csv_dataframe.columns:
+        # Check if the column has any null or empty values
+        is_column_empty = all(item == "" for item in csv_dataframe[column])
+        if is_column_empty:
+            # If the column is entirely empty, drop it
+            outputs_df.drop(column, axis=1, inplace=True)
+            continue
+
+        remaining_columns.append(column)
+
+    return outputs_df, remaining_columns
+
+
+def PrintCSVFile(csv_dataframe: DataFrame, dataframe_columns: list, folder_link):
+    data_frame_for_csv = pd.DataFrame.assign(csv_dataframe)
+    csv_names = []
+
+    if "agent_data_dir" in dataframe_columns:
+        data_frame_for_agent_data_csv = GetAgentsInput(data_frame_for_csv)
+        data_frame_for_agent_data_csv = GetAgentsOutput(data_frame_for_agent_data_csv)
+        csv_names.append("agent_data")
+    if "agent_meta_dir" in dataframe_columns:
+        data_frame_for_agent_meta_csv = GetAgentMetaData(data_frame_for_csv)
+        csv_names.append("agent_meta")
+    if "assign_data_dir" in dataframe_columns:
+        data_frame_for_assign_data_csv = GetAssignData(data_frame_for_csv)
+        csv_names.append("assign_data")
+    for csv_name in csv_names:
+        if csv_name == "agent_data":
+            data_frame_for_csv = data_frame_for_agent_data_csv
+        elif csv_name == "agent_meta":
+            data_frame_for_csv = data_frame_for_agent_meta_csv
+        elif csv_name == "assign_data":
+            data_frame_for_csv = data_frame_for_assign_data_csv
+        CreateCSVFile(data_frame_for_csv, folder_link, csv_name)
+
+    return
 
 
 def GetAgentsInput(csv_dataframe: DataFrame):
@@ -116,7 +172,7 @@ def GetAssignData(csv_dataframe: DataFrame):
 
         outputs.append(data)
 
-        outputs_df = pd.DataFrame.from_records(outputs)
+    outputs_df = pd.DataFrame.from_records(outputs)
 
     return csv_dataframe.join(outputs_df)
 

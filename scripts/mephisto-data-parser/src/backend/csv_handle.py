@@ -25,7 +25,10 @@ def CreateCSVDataFrame(user_dataframe: DataFrame):
 
     for i in range(user_dataframe.shape[0]):
         agent_data["assignment_id"].append(int(user_dataframe["assignment_id"][i]))
-        agent_data["agent_id"].append(int(user_dataframe["user_id"][i]))
+        if user_dataframe["user_id"][i] != "":
+            agent_data["agent_id"].append(int(user_dataframe["user_id"][i]))
+        else:
+            agent_data["agent_id"].append(user_dataframe["user_id"][i])
         agent_data["agent_data_dir"].append(user_dataframe["agent_data_dir"][i])
         agent_data["agent_meta_dir"].append(user_dataframe["agent_meta_dir"][i])
         agent_data["assign_data_dir"].append(user_dataframe["assign_data_dir"][i])
@@ -41,8 +44,22 @@ def CreateCSVDataFrame(user_dataframe: DataFrame):
 
 
 def HandleCSVDataFrame(csv_dataframe: DataFrame):
+    """
+    Takes in a Pandas DataFrame of CSV data and processes it to remove empty columns and rows with missing
+    agent_id values. Returns a new DataFrame with the remaining columns and the list of remaining column
+    names.
+
+    Args:
+        csv_dataframe (DataFrame): The input DataFrame containing CSV data.
+
+    Returns:
+        (DataFrame): A new DataFrame with the remaining columns and rows with missing agent_id values removed.
+        (list): A list of the remaining column names.
+    """
     remaining_columns = []
     outputs_df = pd.DataFrame.assign(csv_dataframe)
+    list_of_row = []
+    row_index = 0
 
     # Loop through each column of the DataFrame
     for column in csv_dataframe.columns:
@@ -54,6 +71,11 @@ def HandleCSVDataFrame(csv_dataframe: DataFrame):
             continue
 
         remaining_columns.append(column)
+
+    for agent_id in outputs_df["agent_id"]:
+        if agent_id == "":
+            list_of_row.append(row_index)
+        row_index = row_index + 1
 
     return outputs_df, remaining_columns
 
@@ -105,6 +127,17 @@ def GetAgentsInput(csv_dataframe: DataFrame):
 
 
 def GetAgentsOutput(csv_dataframe: DataFrame):
+    """
+    Extracts output data from a CSV file containing agent data directories and returns a DataFrame
+    with the output data, joined with the original DataFrame.
+
+    :param csv_dataframe: A pandas DataFrame containing a column named "agent_data_dir" with
+    the file paths to the agent data directories.
+    :type csv_dataframe: pandas.DataFrame
+
+    :return: A pandas DataFrame with the output data joined with the original DataFrame.
+    :rtype: pandas.DataFrame
+    """
     agent_data_list = csv_dataframe["agent_data_dir"]
 
     outputs = []
@@ -129,6 +162,8 @@ def GetAgentsOutput(csv_dataframe: DataFrame):
             outputs.append(unnested_dict)
             indices.append(index)
 
+    if not outputs:
+        return csv_dataframe
     output_df = pd.DataFrame.from_records(outputs, index=indices)
     csv_dataframe = csv_dataframe.join(output_df)
 

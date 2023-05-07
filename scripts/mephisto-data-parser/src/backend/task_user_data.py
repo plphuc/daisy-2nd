@@ -82,6 +82,8 @@ def GetSnappedUser(user_list: list):
     snapped_user_arr = []
 
     for user in user_list:
+        if user == "":
+            continue
         if user > maximum_user_number:
             maximum_user_number = user
 
@@ -160,17 +162,26 @@ def CreateUserDataFrame(folder_link, database_path):
 
     user_dataframe = pd.DataFrame(data=user_data)
 
-    sorted_user_dataframe = user_dataframe.sort_values("assignment_id")
+    sorted_user_dataframe = user_dataframe.sort_values("assignment_id", ignore_index=True)
 
     return sorted_user_dataframe
+
+
+def CountNumberOfUser(user_data_frame: DataFrame, assignment_id: int):
+    count_user = 0
+    for user_id in user_data_frame[user_data_frame["assignment_id"] == assignment_id][
+        "user_id"
+    ]:
+        if user_id != "":
+            count_user = count_user + 1
+
+    return count_user
 
 
 def PrintTaskInformation(user_dataframe: DataFrame):
     for assignment_id in list(user_dataframe["assignment_id"].unique()):
         print(f"Task:{assignment_id}")
-        number_of_user = len(
-            user_dataframe[user_dataframe["assignment_id"] == assignment_id]
-        )
+        number_of_user = CountNumberOfUser(user_dataframe, assignment_id)
         user_did_assignment = list(
             user_dataframe.loc[
                 (user_dataframe["assignment_id"] == assignment_id)
@@ -200,9 +211,13 @@ def CountTotalAssignments(user_dataframe: DataFrame):
 
 
 def CountTotalUser(user_dataframe: DataFrame):
+    count_user = 0
+
     if all(item == "" for item in user_dataframe["user_id"]):
         return 0
+    
+    for agent_id in user_dataframe["user_id"]:
+        if agent_id != "":
+            count_user = count_user + 1
 
-    total_user = user_dataframe["user_id"].count()
-
-    return total_user
+    return count_user

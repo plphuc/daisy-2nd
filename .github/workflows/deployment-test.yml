@@ -58,7 +58,7 @@ jobs:
           # execute commands
           script: >
             cd ${{ env.REPO_DIR }};
-            bash ./scripts/build-container.sh \
+            curl https://raw.githubusercontent.com/d-lab/mephisto/deployment/scripts/build-container.sh | bash -s -- \
               ${{ env.REPO_DIR }} \
               ${{ env.APP_NAME }} \
               ${{ env.USER_EMAIL }} \
@@ -89,7 +89,7 @@ jobs:
           command_timeout: 30m
           script: >
             cd ${{ env.REPO_DIR }}; 
-            bash ./scripts/run-container.sh \
+            curl https://raw.githubusercontent.com/d-lab/mephisto/deployment/scripts/run-container.sh | bash -s -- \
               ${{ env.APP_NAME }} \
               ${{ secrets.HEROKU_API_KEY }} \
               ${{ env.APP_ENV }} \

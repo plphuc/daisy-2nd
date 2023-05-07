@@ -9,6 +9,7 @@ services:
     command: ["python3", "deploy.py"]
     ports:
       - 3000:3000
+      - 3032:3032
     volumes:
       - .:/mephisto/app:cached
       - ./data:/mephisto/data:cached

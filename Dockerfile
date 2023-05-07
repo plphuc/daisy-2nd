@@ -46,5 +46,6 @@ RUN pip3 install -e .
 
 RUN yarn install
 RUN yarn build-all
+RUN mephisto metrics install
 
 CMD bash -c "sleep infinity"

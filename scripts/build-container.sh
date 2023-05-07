@@ -26,6 +26,9 @@ docker kill -s SIGINT $(docker ps -a -q --filter ancestor="$APP_NAME" --format="
 echo "Stop and remove all containers with image tag: $APP_NAME"
 docker rm $(docker stop $(docker ps -q -a --filter ancestor="$APP_NAME" --format="{{.ID}}")) || true
 
+echo "Pulling latest docker image: jayhuynh239/mephisto-uq:latest"
+docker pull jayhuynh239/mephisto-uq:latest
+
 docker build -t $APP_NAME \
         --build-arg GIT_USER_EMAIL=$USER_EMAIL \
         --build-arg GIT_USER_NAME=$USER_NAME \

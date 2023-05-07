@@ -59,13 +59,13 @@ function Directions({ children }) {
 }
 
 function SimpleFrontend({ taskData, isOnboarding, onSubmit, onError }) {
+  const data = { success: true };
   return (
     <div style={{ padding: "50px" }}>
-      <button className="btn btn-outline">Button</button>
-      <button className="btn btn-outline btn-primary">Button</button>
-      <button className="btn btn-outline btn-secondary">Button</button>
-      <button className="btn btn-outline btn-accent">Button</button>
-      This is some text.
+      <button className="btn btn-outline" onClick={() => {
+        onSubmit(data);
+      }}>Button</button>
+      Click this button to submit sample data.
     </div>
   );
 }

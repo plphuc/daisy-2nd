@@ -19,7 +19,17 @@ cd $REPO_DIR/app
 
 docker exec -t $(docker ps -a -q --filter ancestor="$APP_NAME" --format="{{.ID}}") bash -c 'pkill -SIGINT -f python3 && sleep 5' || true
 
+echo "Wait for 10 seconds for the container to stop"
+# wait for 10 seconds for the container to stop
+sleep 10
+
+docker exec -t $(docker ps -a -q --filter ancestor="$APP_NAME" --format="{{.ID}}") bash -c 'pkill -SIGINT -f python3 && sleep 5' || true
 echo "Send SIGINT to all containers with image tag: $APP_NAME"
+
+echo "Wait for 10 seconds for the container to stop"
+# wait for 10 seconds for the container to stop
+sleep 10
+
 docker kill -s SIGINT $(docker ps -a -q --filter ancestor="$APP_NAME" --format="{{.ID}}") || true
 
 

@@ -11,9 +11,24 @@ docker run -d --rm --init -v $APP_NAME-volume:/mephisto/data \
     -e APP_ENV=$APP_ENV \
     $APP_NAME;
     
-timeout 30m \
-    sh -c "while ! docker logs -f $(docker ps -q --filter ancestor=$APP_NAME --format="{{.ID}}")| grep -q '$M_TURK_PREVIEW_URL_PREFIX'; \
+container_id=$(docker ps -q --filter ancestor=$APP_NAME --format="{{.ID}}");
+
+if [ -z "$container_id" ]
+then
+    echo "Container $APP_NAME failed to start";
+    exit 1;
+fi
+
+mkdir -p ~/logs/$APP_NAME/;
+
+echo "Streaming logs from container $container_id to file ~/logs/$APP_NAME/$container_id-$(date +%s).log";
+nohup docker logs -f $container_id > ~/logs/$APP_NAME/$container_id-$(date +%s).log &
+
+echo "Waiting for MTurk preview URL: ";
+timeout 1800 \
+    sh -c "while ! docker logs -f $container_id| grep -q '$M_TURK_PREVIEW_URL_PREFIX'; \
             do sleep 1; done";
 
 
-docker logs $(docker ps -q --filter ancestor=$APP_NAME --format="{{.ID}}");
+echo "MTurk preview URL: ";
+docker logs $container_id;

@@ -1,6 +1,6 @@
 APP_NAME=${1:?"Specify 'APP_NAME' as argv[1]"}
 
-nginx_container_id=$(docker ps -q --filter ancestor=cli-nginx --format="{{.ID}}");
+nginx_container_id=$(docker ps -q --filter ancestor=mephistonginx_nginx --format="{{.ID}}");
 if [ -z "$nginx_container_id" ]
 then
     echo "Container nginx not found";

@@ -15,6 +15,8 @@ SHELL ["/bin/bash", "-c"]
 # Set working directory to /app
 WORKDIR /mephisto/app
 
+RUN mephisto metrics install
+
 # Clear the content of /app
 RUN rm -rf ./*
 

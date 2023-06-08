@@ -6,12 +6,15 @@ M_TURK_PREVIEW_URL_PREFIX=${4:?"Specify 'M_TURK_PREVIEW_URL_PREFIX' as argv[4]"}
 
 
 docker run -d --rm --init -v $APP_NAME-volume:/mephisto/data \
+    --net mephistonginx_mephisto-net \
     --name $APP_NAME \
     -e HEROKU_API_KEY=$HEROKU_API_KEY \
     -e APP_ENV=$APP_ENV \
     $APP_NAME;
-    
+
 container_id=$(docker ps -q --filter ancestor=$APP_NAME --format="{{.ID}}");
+
+echo "Running container $APP_NAME with id: $container_id";
 
 if [ -z "$container_id" ]
 then

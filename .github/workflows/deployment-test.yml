@@ -94,3 +94,25 @@ jobs:
               ${{ secrets.HEROKU_API_KEY }} \
               ${{ env.APP_ENV }} \
               "https://workersandbox.mturk.com/mturk/preview?groupId";
+
+  view-metrics:
+    name: view-metrics
+    needs: run-container
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/ssh-action@v0.1.7
+        with:
+          # ssh host
+          host: ${{ env.HOST }}
+          # ssh port
+          port: ${{ env.PORT }}
+          # ssh username
+          username: ${{ env.USERNAME }}
+          # ssh password
+          key: ${{ secrets.PRIVATE_KEY }}
+          # execute commands
+          script: >
+            cd ${{ env.REPO_DIR }}; 
+            curl https://raw.githubusercontent.com/d-lab/mephisto/deployment/scripts/view-metrics.sh | bash -s -- \
+              ${{ env.APP_NAME }};
+

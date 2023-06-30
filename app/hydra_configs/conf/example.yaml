@@ -5,6 +5,7 @@ defaults:
   - /mephisto/provider: mock
 
 mephisto:
+  log_level: debug
   blueprint:
     data_json: ${task_dir}/data.json
     task_source: ${task_dir}/webapp/build/bundle.js

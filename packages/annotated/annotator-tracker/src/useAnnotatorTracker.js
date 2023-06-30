@@ -290,6 +290,9 @@ const useAnnotatorTracker = function (
     );
 
     const sendBehavior = () => {
+      if (isLoading) {
+        return;
+      }
       db.popAll(DB_STORE_NAME).then((behaviors) => {
         if (behaviors.length > 0) {
           handleBehaviorsSubmit(behaviors);

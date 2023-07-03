@@ -15,6 +15,8 @@ from mephisto.abstractions.blueprints.abstract.static_task.static_blueprint impo
 )
 from rich import print
 from omegaconf import DictConfig
+import post_deployment_hook as post
+import pre_deployment_hook as pre
 import os
 
 env = os.environ.get("APP_ENV", "")
@@ -54,6 +56,7 @@ def handle_onboarding(onboarding_data):
 
 @task_script(default_config_file=default_config_file)
 def main(operator: Operator, cfg: DictConfig) -> None:
+    pre.handle()
     task_name = cfg.mephisto.task.get("task_name", None)
 
     is_using_screening_units = cfg.mephisto.blueprint["use_screening_task"]
@@ -70,13 +73,7 @@ def main(operator: Operator, cfg: DictConfig) -> None:
         operator.launch_task_run(cfg.mephisto)
         operator.wait_for_runs_then_shutdown(skip_input=True, log_rate=30)
     finally:
-        exec_parse_data_script()
-
-
-def exec_parse_data_script():
-    # run clean_up.sh script, the script is in the same directory as this file
-    os.system(f"sh {os.path.dirname(os.path.realpath(__file__))}/clean_up.sh")
-
+        post.handle()
 
 if __name__ == "__main__":
     main()

@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   mephisto-service:
-    container_name: mephisto-service
+    container_name: ${PROJECT_NAME}-service
     build:
       context: .
       dockerfile: Dockerfile.dev

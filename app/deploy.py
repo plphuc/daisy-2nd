@@ -21,11 +21,11 @@ import os
 
 env = os.environ.get("APP_ENV", "")
 
-default_config_file = "example.yaml"
+default_config_file = "dev.yaml"
 if env == "prod":
-    default_config_file = "example_prod.yaml"
+    default_config_file = "prod.yaml"
 elif env == "test" or env == "sb":
-    default_config_file = "example_test.yaml"
+    default_config_file = "test.yaml"
 
 
 def my_screening_unit_generator():

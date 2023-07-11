@@ -14,6 +14,7 @@ RUN python3 -m ensurepip
 RUN pip3 install --no-cache --upgrade pip setuptools
 
 RUN apk add --update --no-cache git
+RUN apk add --no-cache aws-cli
 
 # Install node and npm
 RUN apk add --update nodejs npm

@@ -6,7 +6,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    command: ["python3", "deploy.py"]
+    command: >
+      sh -c "../mephisto/scripts/metrics/shutdown_metrics.py || true && python3 deploy.py"
+#      sh -c "sleep infinity"
 #    command: ["sleep", "infinity"]
     ports:
       - 3000:3000

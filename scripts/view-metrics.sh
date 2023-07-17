@@ -31,6 +31,11 @@ echo "" >> $file
 echo "    server_name ${APP_NAME}.mephisto.aufederal2022.com www.${APP_NAME}.mephisto.aufederal2022.com;" >> $file
 echo "" >> $file
 echo "    location / {" >> $file
+echo "        proxy_pass http://${APP_NAME};" >> $file
+echo "        include proxy_params;" >> $file
+echo "    }" >> $file
+echo "" >> $file
+echo "    location /metrics {" >> $file
 echo "        proxy_pass http://${APP_NAME}:3032;" >> $file
 echo "        include proxy_params;" >> $file
 echo "    }" >> $file

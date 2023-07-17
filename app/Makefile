@@ -1,7 +1,10 @@
 # Get the parent directory name
 PARENT_FOLDER_NAME := $(shell basename "$(shell dirname "$(CURDIR)")")
 
-.PHONY: run watch link
+.PHONY: build run watch link
+
+build:
+	@PROJECT_NAME=$(PARENT_FOLDER_NAME) docker-compose up --build
 
 run:
 	@PROJECT_NAME=$(PARENT_FOLDER_NAME) docker-compose up

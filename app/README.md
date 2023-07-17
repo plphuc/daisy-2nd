@@ -9,6 +9,8 @@ Before deploying, you must set the following variables/secrets in your Github Ac
 - MTURK_ACCESS_KEY_ID (Mturk access key)
 - MTURK_SECRET_ACCESS_KEY (Mturk secret key)
 - PRIVATE_KEY (Private key for ssh access)
+- AWS_ACCESS_KEY_ID (Key for uploading data to S3)
+- AWS_SECRET_ACCESS_KEY (Key for uploading data to S3)
 
 You also need to install the following tools:
 - Docker (Desktop)

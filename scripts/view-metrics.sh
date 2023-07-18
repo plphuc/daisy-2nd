@@ -31,11 +31,6 @@ echo "" >> $file
 echo "    server_name ${APP_NAME}.mephisto.aufederal2022.com www.${APP_NAME}.mephisto.aufederal2022.com;" >> $file
 echo "" >> $file
 echo "    location / {" >> $file
-echo "        proxy_pass http://${APP_NAME};" >> $file
-echo "        include proxy_params;" >> $file
-echo "    }" >> $file
-echo "" >> $file
-echo "    location /metrics {" >> $file
 echo "        proxy_pass http://${APP_NAME}:3032;" >> $file
 echo "        include proxy_params;" >> $file
 echo "    }" >> $file
@@ -51,6 +46,38 @@ rm $file
 # create a symbolic link in /etc/nginx/sites-enabled/{APP_NAME}.mephisto.aufederal2022.com with sudo permission
 # to the file in /etc/nginx/sites-available/{APP_NAME}.mephisto.aufederal2022.com
 docker exec $nginx_container_id /bin/sh -c "ln -s /etc/nginx/sites-available/${APP_NAME}.mephisto.aufederal2022.com /etc/nginx/sites-enabled/"
+
+get_subdomain_from_filename() {
+    local filename="$1"
+    echo "${filename%%.*}"
+}
+
+# Check if a container with the given name is running
+is_container_running() {
+    local container_name="$1"
+    docker inspect "$container_name" >/dev/null 2>&1
+}
+
+# Remove a site from /etc/nginx/sites-available and /etc/nginx/sites-enabled inside the $nginx_container_id container
+remove_site_inside_container() {
+    local site_filename="$1"
+    docker exec $nginx_container_id rm -f "/etc/nginx/sites-available/$site_filename" >/dev/null
+    docker exec $nginx_container_id rm -f "/etc/nginx/sites-enabled/${site_filename//sites-available/sites-enabled}" >/dev/null
+    echo "Removed site $site_filename from /etc/nginx/sites-available and /etc/nginx/sites-enabled inside the $nginx_container_id container"
+}
+
+# Main script
+docker exec $nginx_container_id /bin/sh -c 'ls /etc/nginx/sites-available/' | while read -r site_filename; do
+    if [ -n "$site_filename" ]; then
+        subdomain=$(get_subdomain_from_filename "$site_filename")
+        echo $subdomain
+
+        # Check if there is a running container with the same name as the subdomain
+        if ! is_container_running "$subdomain"; then
+            remove_site_inside_container "$site_filename"
+        fi
+    fi
+done
 
 
 # restart nginx with sudo permission

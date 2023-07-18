@@ -66,7 +66,8 @@ remove_site_inside_container() {
     echo "Removed site $site_filename from /etc/nginx/sites-available and /etc/nginx/sites-enabled inside the $nginx_container_id container"
 }
 
-# Main script
+# Removing old sites that doesn't have container
+echo "Removing old sites that doesn't have container"
 docker exec $nginx_container_id /bin/sh -c 'ls /etc/nginx/sites-available/' | while read -r site_filename; do
     if [ -n "$site_filename" ]; then
         subdomain=$(get_subdomain_from_filename "$site_filename")

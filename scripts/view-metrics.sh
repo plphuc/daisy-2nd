@@ -70,7 +70,6 @@ remove_site_inside_container() {
 docker exec $nginx_container_id /bin/sh -c 'ls /etc/nginx/sites-available/' | while read -r site_filename; do
     if [ -n "$site_filename" ]; then
         subdomain=$(get_subdomain_from_filename "$site_filename")
-        echo $subdomain
 
         # Check if there is a running container with the same name as the subdomain
         if ! is_container_running "$subdomain"; then

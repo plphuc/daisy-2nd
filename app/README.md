@@ -1,7 +1,7 @@
-# Introduction
+# Introduction :book:
 This README provides an overview for the deployment flow for the project generated from https://github.com/d-lab/mephisto template.
 
-# Prerequisites
+# Prerequisites :white_check_mark:
 Before deploying, you must set the following variables/secrets in your Github Actions environment:
 
 - DOTNETRC (Heroku .netrc file content with "" wrapped)
@@ -15,7 +15,7 @@ Before deploying, you must set the following variables/secrets in your Github Ac
 You also need to install the following tools:
 - Docker (Desktop)
 
-# Notes
+# Notes :notebook:
 Please read the below notes carefully before starting your work:
 
 - The practical deployment flow: local -> test -> prod
@@ -31,7 +31,7 @@ Please discuss with your manager before changing them.
   - `units_per_assignment`: number of units per assignment
   - `task_reward`: reward per unit
 
-# How to start
+# How to start :triangular_flag_on_post:
 1. Create a new repo from d-lab/mephisto template with `deployment` branch
 2. Clone the new repo to your local machine
 3. Switch to the `deployment` branch
@@ -41,21 +41,22 @@ Please discuss with your manager before changing them.
 2. Go to Settings -> Secrets and variables -> Actions
 3. New repository secret
 
-## Local Deployment
+## Local Deployment :hammer:
 1. Start from the `deployment` branch
 2. cd to `app` directory
-3. Run `make run` to start the local server
-4. Run `make watch` to build and watch the frontend
-5. Start implementing your task in webapp/src
+3. You might want to run `make link` in the first time run
+4. Run `make run` to start the local server
+5. Run `make watch` to build and watch the frontend
+6. Start implementing your task in webapp/src
 
-## Test Deployment
+## Test Deployment :test_tube:
 1. Once you are happy with your local version.
 2. Make sure to config the hydra_config in **test.yml** and environment variables in github actions
 3. Create a new branch from your current `deployment` branch and name it `deployment-test`
 4. Push your changes to `deployment-test` branch to remote
 5. View your deployment status in github actions
 
-## Production Deployment
+## Production Deployment :rocket:
 1. Make sure to config the hydra_config in **prod.yml** and environment variables in github actions
 2. Create a new branch from your current `deployment` branch and name it `deployment-prod`
 3. Push your changes to `deployment-prod` branch to remote

@@ -4,7 +4,7 @@ PARENT_FOLDER_NAME := $(shell basename "$(shell dirname "$(CURDIR)")")
 .PHONY: build run watch link
 
 build:
-	@PROJECT_NAME=$(PARENT_FOLDER_NAME) docker-compose up --build
+	@PROJECT_NAME=$(PARENT_FOLDER_NAME) docker-compose build --no-cache
 
 run:
 	@PROJECT_NAME=$(PARENT_FOLDER_NAME) docker-compose up

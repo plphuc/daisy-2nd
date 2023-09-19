@@ -3,7 +3,7 @@ FROM alpine:3.15
 RUN apk update
 RUN apk upgrade
 RUN apk add --update --no-cache bash build-base gcc musl-dev python3-dev curl libc6-compat
-RUN apk add --no-cache gcc g++ py-pip mysql-dev linux-headers libffi-dev openssl-dev
+RUN apk add --no-cache gcc g++ py-pip mysql-dev linux-headers libffi-dev openssl-dev openssh-keygen openssh
 
 SHELL ["/bin/bash", "-c"]
 

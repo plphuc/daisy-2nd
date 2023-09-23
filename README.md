@@ -9,8 +9,9 @@ Before deploying, you must set the following variables/secrets in your Github Ac
 - MTURK_ACCESS_KEY_ID (Mturk access key)
 - MTURK_SECRET_ACCESS_KEY (Mturk secret key)
 - PRIVATE_KEY (Private key for ssh access)
-- AWS_ACCESS_KEY_ID (Key for uploading data to S3)
-- AWS_SECRET_ACCESS_KEY (Key for uploading data to S3)
+- AWS_ACCESS_KEY_ID (mephisto-ec2 access key)
+- AWS_SECRET_ACCESS_KEY (mephisto-ec2 secret key)
+- PROLIFIC_API_KEY
 
 You also need to install the following tools:
 - Docker (Desktop)
@@ -61,3 +62,10 @@ Please discuss with your manager before changing them.
 2. Create a new branch from your current `deployment` branch and name it `deployment-prod`
 3. Push your changes to `deployment-prod` branch to remote
 4. Check github actions log for the deployment status and the production path to access the task
+
+## Prolific Deployment :rocket:
+* Example in `app/hydra_configs/conf/prod_prolific.yaml`
+* Prolific only use EC2 architecture
+* Make sure to config PROLIFIC_API_KEY
+* Should edit `prolific_workspace_name` and `prolific_project_name` to map with workspace and project in prolific account
+  * Have to config finance in that target workspace before deployment

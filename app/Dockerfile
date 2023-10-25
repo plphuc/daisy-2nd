@@ -48,4 +48,6 @@ WORKDIR webapp
 RUN ./link_mephisto_task.sh
 WORKDIR ..
 
+EXPOSE 3000
+
 CMD yes '\n' | yes 'y\n' | python3 deploy.py

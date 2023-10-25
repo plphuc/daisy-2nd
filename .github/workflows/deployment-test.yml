@@ -19,7 +19,7 @@ env:
   APP_NAME: ${{ github.event.repository.name }}-${{ github.ref_name }}
   APP_ENV: dev
   AWS_REGION: ap-southeast-2
-  SVLD_VERSION: alpha-2
+  SVLD_VERSION: main
   PREVIEW_URL_PREFIX: '%Mock task launched.* for preview%'
   CONT_PORT: 3000
 

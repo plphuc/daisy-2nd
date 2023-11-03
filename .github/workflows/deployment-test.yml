@@ -8,9 +8,6 @@ on:
       - deployment-test
 
 env:
-  HOST: mephisto.aufederal2022.com
-  USERNAME: deployer
-  PORT: 22
   MTURK_NAME: my_mturk_user_sandbox
   MTURK_TYPE: mturk_sandbox
   USER_EMAIL: jaythaiduong.huynh@uq.edu.au
@@ -22,6 +19,8 @@ env:
   SVLD_VERSION: main
   PREVIEW_URL_PREFIX: '%Mock task launched.* for preview%'
   CONT_PORT: 3000
+  VPC_ID: 'vpc-02e937c4efdd7541b'
+  DOMAIN: 'aufederal2022.com'
 
 jobs:
   build-container:

@@ -23,17 +23,6 @@ This README provides an overview of the deployment flow for the project generate
 
 # Prerequisites :white_check_mark:
 
-Before deploying, you must set the following variables/secrets in your GitHub Actions environment:
-
-- `DOTNETRC` (Heroku .netrc file content with "" wrapped)
-- `HEROKU_API_KEY` (Heroku API key)
-- `MTURK_ACCESS_KEY_ID` (Mturk access key)
-- `MTURK_SECRET_ACCESS_KEY` (Mturk secret key)
-- `PRIVATE_KEY` (Private key for SSH access)
-- `AWS_ACCESS_KEY_ID` (mephisto-ec2 access key)
-- `AWS_SECRET_ACCESS_KEY` (mephisto-ec2 secret key)
-- `PROLIFIC_API_KEY`
-
 You also need to install the following tools:
 - Docker (Desktop)
 
@@ -62,12 +51,6 @@ Please read the below notes carefully before starting your work:
 2. Clone the new repo to your local machine.
 3. Switch to the `deployment` branch.
 
-## How to Configure Environment Variables in GitHub Actions
-
-1. You must be the owner of the repo to configure the environment variables.
-2. Go to Settings -> Secrets and variables -> Actions.
-3. Add a new repository secret.
-
 ## Local Deployment :hammer:
 
 1. Start from the `deployment` branch.
@@ -76,6 +59,20 @@ Please read the below notes carefully before starting your work:
 4. Run `make run` to start the local server.
 5. Run `make watch` to build and watch the frontend.
 6. Start implementing your task in `webapp/src`.
+
+# Deployment :shipit:
+
+## Prerequisites before Deployment :desktop_computer:
+Before deploying, you must set the following variables/secrets in your GitHub Actions environment:
+
+- `AWS_ACCESS_KEY_ID` (mephisto-ec2 access key)
+- `AWS_SECRET_ACCESS_KEY` (mephisto-ec2 secret key)
+
+## How to Configure Environment Variables in GitHub Actions
+
+1. You must be the owner of the repo to configure the environment variables.
+2. Go to Settings -> Secrets and variables -> Actions.
+3. Add a new repository secret.
 
 ## Test Deployment :test_tube:
 
@@ -93,7 +90,7 @@ Please read the below notes carefully before starting your work:
 4. Check GitHub Actions log for the deployment status and the production path to access the task.
 
 ## Prolific Deployment :rocket:
-
+- We only have production deployment for Prolific.
 - Example in `app/hydra_configs/conf/prod_prolific.yaml`.
 - Prolific only uses EC2 architecture.
 - Make sure to configure `PROLIFIC_API_KEY`.

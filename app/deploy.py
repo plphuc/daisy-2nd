@@ -21,7 +21,8 @@ import os, signal
 
 env = os.environ.get("APP_ENV", "")
 
-default_config_file = "dev_ec2.yaml"
+default_config_file = "dev.yaml"
+# default_config_file = "dev_ec2.yaml"
 if env == "prod":
     default_config_file = "prod.yaml"
     # default_config_file = "prod_prolific.yaml"

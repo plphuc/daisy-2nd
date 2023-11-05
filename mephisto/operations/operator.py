@@ -429,6 +429,8 @@ class Operator:
                     f"Waiting on {len(remaining_runs)} task runs with assignments in-flight. "
                     f"{format_loud('Ctrl-C ONCE')} to kill running tasks and FORCE QUIT."
                 )
+                logger.info(f"Raise KeyboardInterrupt to force quit.")
+                raise KeyboardInterrupt
                 next_runs = []
                 for tracked_run in remaining_runs:
                     if tracked_run.task_run.get_is_completed():
@@ -439,8 +441,6 @@ class Operator:
                 if len(next_runs) > 0:
                     time.sleep(30)
                 remaining_runs = next_runs
-                logger.info(f"Raise KeyboardInterrupt to force quit.")
-                raise KeyboardInterrupt
         except Exception as e:
             logger.exception(f"Encountered problem during shutting down {e}")
         except (KeyboardInterrupt, SystemExit) as e:

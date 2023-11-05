@@ -50,4 +50,4 @@ WORKDIR ..
 
 EXPOSE 3000
 
-CMD yes '\n' | yes 'y\n' | python3 deploy.py
+CMD ["python3", "deploy.py"]

@@ -205,12 +205,12 @@ def augment_config_from_db(script_cfg: DictConfig, db: "MephistoDB") -> DictConf
 
     if provider_type in ["mturk"]:
         try_prerun_cleanup(db, cfg.provider.requester_name)
-        input(f"This task is going to launch live on {provider_type}, press enter to continue: ")
+        print(f"This task is going to launch live on {provider_type}, press enter to continue: ")
     if provider_type in ["mturk_sandbox", "mturk"] and architect_type not in [
         "heroku",
         "ec2",
     ]:
-        input(
+        print(
             f"This task is going to launch live on {provider_type}, but your "
             f"provided architect is {architect_type}, are you sure you "
             "want to do this? : "

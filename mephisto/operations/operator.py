@@ -439,6 +439,8 @@ class Operator:
                 if len(next_runs) > 0:
                     time.sleep(30)
                 remaining_runs = next_runs
+                logger.info(f"Raise KeyboardInterrupt to force quit.")
+                raise KeyboardInterrupt
         except Exception as e:
             logger.exception(f"Encountered problem during shutting down {e}")
         except (KeyboardInterrupt, SystemExit) as e:

@@ -265,7 +265,7 @@ def build_custom_bundle(
                     break
                 for fname in files:
                     path = os.path.join(root, fname)
-                    if os.path.getmtime(path) > created_date:
+                    if os.path.exists(path) and os.path.getmtime(path) > created_date:
                         up_to_date = False
                         break
             if up_to_date:

@@ -139,6 +139,7 @@ const useMephistoTask = function () {
     handleSubmit,
     handleMetadataSubmit,
     handleFatalError,
+    getAgentRegistration,
   };
 };
 

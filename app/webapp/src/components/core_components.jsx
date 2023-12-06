@@ -58,20 +58,24 @@ function Directions({children}) {
     );
 }
 
-function SimpleFrontend({taskData, isOnboarding, onSubmit, onError}) {
+function SimpleFrontend({taskData, isOnboarding, onSubmit, onError, getAgentRegistration}) {
     const [answers, setAnswers] = React.useState({
         answer1: 'sample1',
         answer2: '',
     });
+    const getLink = (getAgentRegistration) => {
+        const agentData = getAgentRegistration();
+        const params = { ...agentData, provider: agentData.provider_type };
+        return `https://gpt.mephisto.aufederal2022.com?${new URLSearchParams(params).toString()}`;
+    };
 
     const handleInputChange = (event) => {
         const {name, value} = event.target;
         setAnswers({...answers, [name]: value});
     };
-
     return (
-        <div style={{padding: '50px'}}>
-            <div className="p-4">
+        <div className="p-14 grid grid-cols-12">
+            <div className="p-4 col-span-6">
                 <h2 className="text-2xl font-semibold mb-4">This is sample task</h2>
                 <div>
                     <label htmlFor="answer2"
@@ -89,6 +93,11 @@ function SimpleFrontend({taskData, isOnboarding, onSubmit, onError}) {
                     onSubmit(answers);
                 }}>Submit
                 </button>
+            </div>
+            <div className="p-4 col-span-6 h-96">
+                <iframe
+                    src={getLink(getAgentRegistration)}
+                    width="100%" height="100%" frameBorder="0"></iframe>
             </div>
         </div>
     );

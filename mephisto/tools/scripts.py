@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
-# Copyright (c) Meta Platforms and its affiliates.
+# Copyright (c) Facebook, Inc. and its affiliates.
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
-
 """
 Utilities that are useful for Mephisto-related scripts.
 """
@@ -43,6 +42,8 @@ from rich import print
 if TYPE_CHECKING:
     from mephisto.abstractions.database import MephistoDB
 
+APP_NAME = os.getenv('APP_NAME', 'temp')
+APP_ENV = os.getenv('APP_ENV', 'dev')
 
 def load_db_and_process_config(
     cfg: DictConfig, print_config=False
@@ -289,7 +290,11 @@ def build_custom_bundle(
                 "The script should be able to be ran with bash"
             )
 
-    webpack_complete = subprocess.call(["npm", "run", build_command])
+    if APP_ENV == 'prod':
+        webpack_complete = subprocess.call(["npm", "run", "build"])
+    else:
+        webpack_complete = subprocess.call(["npm", "run", "dev"])
+
     if webpack_complete != 0:
         raise Exception(
             "Webpack appears to have failed to build your "

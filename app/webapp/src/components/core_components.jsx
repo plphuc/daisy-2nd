@@ -5,6 +5,9 @@
  */
 
 import React from 'react';
+import {
+    ChatGPT,
+} from "./ChatGPT.jsx";
 
 function OnboardingComponent({onSubmit}) {
     return (
@@ -58,17 +61,11 @@ function Directions({children}) {
     );
 }
 
-function SimpleFrontend({taskData, isOnboarding, onSubmit, onError, getAgentRegistration}) {
+function SimpleFrontend({taskData, fullData, isOnboarding, onSubmit, onError, getAgentRegistration}) {
     const [answers, setAnswers] = React.useState({
         answer1: 'sample1',
         answer2: '',
     });
-    const getLink = (getAgentRegistration) => {
-        const agentData = getAgentRegistration();
-        const params = { ...agentData, provider: agentData.provider_type };
-        return `https://gpt.mephisto.aufederal2022.com?${new URLSearchParams(params).toString()}`;
-    };
-
     const handleInputChange = (event) => {
         const {name, value} = event.target;
         setAnswers({...answers, [name]: value});
@@ -95,9 +92,7 @@ function SimpleFrontend({taskData, isOnboarding, onSubmit, onError, getAgentRegi
                 </button>
             </div>
             <div className="p-4 col-span-6 h-96">
-                <iframe
-                    src={getLink(getAgentRegistration)}
-                    width="100%" height="100%" frameBorder="0"></iframe>
+                <ChatGPT fullData={fullData} getAgentRegistration={getAgentRegistration}/>
             </div>
         </div>
     );

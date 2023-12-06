@@ -5,6 +5,7 @@
 # LICENSE file in the root directory of this source tree.
 
 import time
+import os
 from functools import partial
 from dataclasses import dataclass, fields
 from prometheus_client import Histogram, Gauge, Counter  # type: ignore
@@ -35,7 +36,8 @@ if TYPE_CHECKING:
 from mephisto.utils.logger_core import get_logger
 
 logger = get_logger(name=__name__)
-
+APP_NAME = os.getenv('APP_NAME', 'temp')
+APP_ENV = os.getenv('APP_ENV', 'dev')
 
 AGENT_DETAILS_COUNT = Counter(
     "agent_details_responses", "Responses to agent details requests", ["response"]
@@ -84,6 +86,8 @@ class AgentDetails:
     agent_id: Optional[str] = None
     init_task_data: Optional[Dict[str, Any]] = None
     failure_reason: Optional[str] = None
+    app_env: str = APP_ENV
+    app_name: str = APP_NAME
 
     def to_dict(self):
         return dict((field.name, getattr(self, field.name)) for field in fields(self))

@@ -7,7 +7,7 @@ mephisto:
   architect:
     _architect_type: ec2
     profile_name: mpt
-    subdomain: "mpt-p.mpt"
+    subdomain: "mpt-t.1"
   blueprint:
     data_json: ${task_dir}/data.json
     task_source: ${task_dir}/webapp/build/bundle.js
@@ -16,17 +16,17 @@ mephisto:
     units_per_assignment: 1
   log_level: "debug"
   task:
-    task_name: "mpt-p"
-    task_title: "mpt-p Task"
+    task_name: "mpt-t"
+    task_title: "mpt-t Task"
     task_description: "This is a simple test of static Prolific tasks."
     task_reward: 10
     task_tags: "static,task,testing"
-    max_num_concurrent_units: 10
+    max_num_concurrent_units: 1
   provider:
     prolific_external_study_url: "https://example.com?participant_id={{%PROLIFIC_PID%}}&study_id={{%STUDY_ID%}}&submission_id={{%SESSION_ID%}}"
     prolific_id_option: "url_parameters"
-    prolific_workspace_name: "UQ Workspace"
-    prolific_project_name: "Big5_LLM"
+    prolific_workspace_name: "Jay Test"
+    prolific_project_name: "test"
     prolific_estimated_completion_time_in_minutes: 1
 #    prolific_allow_list_group_name: "Allow list"
 #    prolific_block_list_group_name: "Block list"

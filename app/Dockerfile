@@ -52,4 +52,4 @@ WORKDIR ..
 
 EXPOSE 3000
 
-CMD ["sleep", "infinity"]
+CMD ["python3", "deploy.py"]

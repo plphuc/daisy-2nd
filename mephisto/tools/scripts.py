@@ -290,7 +290,7 @@ def build_custom_bundle(
                 "The script should be able to be ran with bash"
             )
 
-    if APP_ENV == 'prod':
+    if APP_ENV == 'prod' or APP_NAME == 'test':
         webpack_complete = subprocess.call(["npm", "run", "build"])
     else:
         webpack_complete = subprocess.call(["npm", "run", "dev"])

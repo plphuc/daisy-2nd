@@ -9,7 +9,7 @@ function ChatGPT({getAgentRegistration, fullData}) {
             app_env: fullData?.app_env,
             app_name: fullData?.app_name,
         };
-        const url = process.env.NODE_ENV === "production" ? "https://gpt.mephisto.aufederal2022.com" : "https://dev.gpt.mephisto.aufederal2022.com";
+        const url = process.env.NODE_ENV === "production" ? "https://gpt.dlab-mephisto.com" : "https://staging.gpt.dlab-mephisto.com";
         return `${url}?${new URLSearchParams(params).toString()}`;
     };
 

@@ -1,4 +1,4 @@
-FROM jayhuynh239/mephisto-q:latest
+FROM jayhuynh239/mephisto-uq:latest
 
 ARG GIT_USER_EMAIL
 ARG GIT_USER_NAME
@@ -52,4 +52,4 @@ WORKDIR ..
 
 EXPOSE 3000
 
-CMD ["python3", "deploy.py"]
+CMD ["sleep", "infinity"]

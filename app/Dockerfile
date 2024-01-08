@@ -49,7 +49,8 @@ RUN chmod 400 /mephisto/mephisto/abstractions/architects/ec2/keypairs/mephisto-s
 WORKDIR webapp
 RUN ./link_mephisto_task.sh
 WORKDIR ..
+RUN chmod +x deploy.sh
 
 EXPOSE 3000
 
-CMD ["python3", "deploy.py"]
+CMD ["./deploy.sh"]

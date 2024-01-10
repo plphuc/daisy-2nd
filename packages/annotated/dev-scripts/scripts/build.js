@@ -1,16 +1,10 @@
-/*
- * Copyright (c) Meta Platforms and its affiliates.
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-import chalk from "chalk";
-import fs from "fs-extra";
-import webpack from "webpack";
-import webpackConfigure from "../src/webpackConfigure";
-import formatWebpackMessages from "../utils/formatWebpackMessages";
-import printBuildError from "../utils/printBuildError";
-import paths from "../src/paths";
+const chalk = require("chalk");
+const fs = require("fs-extra");
+const webpack = require("webpack");
+const webpackConfigure = require("../src/webpackConfigure");
+const formatWebpackMessages = require("../utils/formatWebpackMessages");
+const printBuildError = require("../utils/printBuildError");
+const paths = require("../src/paths");
 
 console.log(chalk.yellow("Starting build...\n"));
 

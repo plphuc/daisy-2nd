@@ -20,7 +20,7 @@ env:
   PREVIEW_URL_PREFIX: '%Mock task launched.* for preview%'
   CONT_PORT: 3000
   VPC_ID: 'vpc-02e937c4efdd7541b'
-  DOMAIN: 'aufederal2022.com'
+  DOMAIN: 'dlab-mephisto.com'
 
 jobs:
   build-container:

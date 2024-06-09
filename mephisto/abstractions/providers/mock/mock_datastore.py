@@ -14,7 +14,7 @@ from mephisto.utils.db import check_if_row_with_params_exists
 from . import mock_datastore_tables as tables
 from .mock_datastore_export import export_datastore
 
-MTURK_REGION_NAME = "ap-southeast-2"
+MTURK_REGION_NAME = "ap-southeast-1"
 
 
 class MockDatastore:

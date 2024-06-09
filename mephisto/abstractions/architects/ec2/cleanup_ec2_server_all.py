@@ -52,7 +52,7 @@ def main():
         _name = f'"{server_name}"'
         logger.info(f"{i+1}/{n_names} Removing {_name}...")
 
-        session = boto3.Session(profile_name=iam_role_name, region_name="us-east-2")
+        session = boto3.Session(profile_name=iam_role_name, region_name="ap-southeast-2")
         try:
             skipped_names.append(_name)
             ec2_helpers.remove_instance_and_cleanup(session, server_name)

@@ -172,7 +172,7 @@
     <span class="kn">from</span> <span class="nn">omegaconf</span> <span class="kn">import</span> <span class="n">DictConfig</span>  <span class="c1"># type: ignore</span>
 
 <span class="n">botoconfig</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
-    <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;us-east-2&quot;</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;max_attempts&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;standard&quot;</span><span class="p">}</span>
+    <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;ap-southeast-2&quot;</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;max_attempts&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;standard&quot;</span><span class="p">}</span>
 <span class="p">)</span>
 
 <span class="n">DEFAULT_AMI_ID</span> <span class="o">=</span> <span class="s2">&quot;ami-0f19d220602031aed&quot;</span>
@@ -475,7 +475,7 @@
             <span class="p">}</span>
         <span class="p">],</span>
         <span class="n">CidrBlock</span><span class="o">=</span><span class="s2">&quot;10.0.0.0/24&quot;</span><span class="p">,</span>
-        <span class="n">AvailabilityZone</span><span class="o">=</span><span class="s2">&quot;us-east-2a&quot;</span><span class="p">,</span>
+        <span class="n">AvailabilityZone</span><span class="o">=</span><span class="s2">&quot;ap-southeast-2a&quot;</span><span class="p">,</span>
         <span class="n">VpcId</span><span class="o">=</span><span class="n">vpc_id</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">subnet_1_id</span> <span class="o">=</span> <span class="n">subnet_1_response</span><span class="p">[</span><span class="s2">&quot;Subnet&quot;</span><span class="p">][</span><span class="s2">&quot;SubnetId&quot;</span><span class="p">]</span>
@@ -491,7 +491,7 @@
             <span class="p">}</span>
         <span class="p">],</span>
         <span class="n">CidrBlock</span><span class="o">=</span><span class="s2">&quot;10.0.1.0/24&quot;</span><span class="p">,</span>
-        <span class="n">AvailabilityZone</span><span class="o">=</span><span class="s2">&quot;us-east-2b&quot;</span><span class="p">,</span>
+        <span class="n">AvailabilityZone</span><span class="o">=</span><span class="s2">&quot;ap-southeast-2b&quot;</span><span class="p">,</span>
         <span class="n">VpcId</span><span class="o">=</span><span class="n">vpc_id</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">subnet_2_id</span> <span class="o">=</span> <span class="n">subnet_2_response</span><span class="p">[</span><span class="s2">&quot;Subnet&quot;</span><span class="p">][</span><span class="s2">&quot;SubnetId&quot;</span><span class="p">]</span>
@@ -1237,7 +1237,7 @@
 <span class="sd">    Optionally includes deleting the hosted zone, which remains</span>
 <span class="sd">    an option due to the DNS changes required</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="n">iam_profile</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;us-east-2&quot;</span><span class="p">)</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="n">iam_profile</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;ap-southeast-2&quot;</span><span class="p">)</span>
 
     <span class="n">elb_client</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s2">&quot;elbv2&quot;</span><span class="p">)</span>
     <span class="n">ec2_client</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s2">&quot;ec2&quot;</span><span class="p">)</span>
@@ -1809,7 +1809,7 @@ the load balancer target, and the ACM certificate addresses</p>
             <span class="p">}</span>
         <span class="p">],</span>
         <span class="n">CidrBlock</span><span class="o">=</span><span class="s2">&quot;10.0.0.0/24&quot;</span><span class="p">,</span>
-        <span class="n">AvailabilityZone</span><span class="o">=</span><span class="s2">&quot;us-east-2a&quot;</span><span class="p">,</span>
+        <span class="n">AvailabilityZone</span><span class="o">=</span><span class="s2">&quot;ap-southeast-2a&quot;</span><span class="p">,</span>
         <span class="n">VpcId</span><span class="o">=</span><span class="n">vpc_id</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">subnet_1_id</span> <span class="o">=</span> <span class="n">subnet_1_response</span><span class="p">[</span><span class="s2">&quot;Subnet&quot;</span><span class="p">][</span><span class="s2">&quot;SubnetId&quot;</span><span class="p">]</span>
@@ -1825,7 +1825,7 @@ the load balancer target, and the ACM certificate addresses</p>
             <span class="p">}</span>
         <span class="p">],</span>
         <span class="n">CidrBlock</span><span class="o">=</span><span class="s2">&quot;10.0.1.0/24&quot;</span><span class="p">,</span>
-        <span class="n">AvailabilityZone</span><span class="o">=</span><span class="s2">&quot;us-east-2b&quot;</span><span class="p">,</span>
+        <span class="n">AvailabilityZone</span><span class="o">=</span><span class="s2">&quot;ap-southeast-2b&quot;</span><span class="p">,</span>
         <span class="n">VpcId</span><span class="o">=</span><span class="n">vpc_id</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">subnet_2_id</span> <span class="o">=</span> <span class="n">subnet_2_response</span><span class="p">[</span><span class="s2">&quot;Subnet&quot;</span><span class="p">][</span><span class="s2">&quot;SubnetId&quot;</span><span class="p">]</span>
@@ -2944,7 +2944,7 @@ clearing the target group, and then shutting down the instance.</p>
 <span class="sd">    Optionally includes deleting the hosted zone, which remains</span>
 <span class="sd">    an option due to the DNS changes required</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="n">iam_profile</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;us-east-2&quot;</span><span class="p">)</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="n">iam_profile</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;ap-southeast-2&quot;</span><span class="p">)</span>
 
     <span class="n">elb_client</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s2">&quot;elbv2&quot;</span><span class="p">)</span>
     <span class="n">ec2_client</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s2">&quot;ec2&quot;</span><span class="p">)</span>

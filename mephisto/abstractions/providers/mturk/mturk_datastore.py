@@ -24,7 +24,7 @@ from . import mturk_datastore_tables as tables
 from .migrations import migrations
 from .mturk_datastore_export import export_datastore
 
-MTURK_REGION_NAME = "us-east-1"
+MTURK_REGION_NAME = "ap-southeast-1"
 
 logger = get_logger(name=__name__)
 
@@ -389,6 +389,6 @@ class MTurkDatastore:
         """
         return self.get_session_for_requester(requester_name).client(
             service_name="mturk",
-            region_name="us-east-1",
+            region_name="ap-southeast-2",
             endpoint_url="https://mturk-requester-sandbox.us-east-1.amazonaws.com",
         )

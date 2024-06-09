@@ -39,7 +39,7 @@ def main():
 
     iam_role_name = input("Please enter local profile name for IAM role\n>> ")
 
-    session = boto3.Session(profile_name=iam_role_name, region_name="us-east-2")
+    session = boto3.Session(profile_name=iam_role_name, region_name="ap-southeast-2")
     ec2_helpers.remove_instance_and_cleanup(session, server_name)
 
 

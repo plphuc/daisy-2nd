@@ -42,7 +42,7 @@ RUN aws configure --profile mpt set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
 RUN aws configure --profile mpt set region ap-southeast-2
 RUN aws configure --profile mpt set output json
 
-RUN aws s3 cp --profile mpt s3://mephisto-data/ec2/fallback.json /mephisto/mephisto/abstractions/architects/ec2/servers/fallback.json
+RUN aws s3 cp --profile mpt s3://mephisto-data/ec2/fallback_ap-southeast-2.json /mephisto/mephisto/abstractions/architects/ec2/servers/fallback.json
 RUN aws s3 cp --profile mpt s3://mephisto-data/ec2/mephisto-server-key.pem /mephisto/mephisto/abstractions/architects/ec2/keypairs/mephisto-server-key.pem
 RUN chmod 400 /mephisto/mephisto/abstractions/architects/ec2/keypairs/mephisto-server-key.pem
 

@@ -120,7 +120,7 @@ class EC2Architect(Architect):
         self.build_dir = build_dir_root
         self.server_detail_path = self._get_detail_path(self.subdomain)
 
-        self.session = boto3.Session(profile_name=self.profile_name, region_name="us-east-2")
+        self.session = boto3.Session(profile_name=self.profile_name, region_name="ap-southeast-2")
 
         self.server_dir: Optional[str] = None
         self.server_id: Optional[str] = None
@@ -230,7 +230,7 @@ class EC2Architect(Architect):
         for key in REQUIRED_KEYS:
             assert key in fallback_details, f"Fallback file missing required key {key}"
 
-        session = boto3.Session(profile_name=profile_name, region_name="us-east-2")
+        session = boto3.Session(profile_name=profile_name, region_name="ap-southeast-2")
         is_new_rule = ec2_helpers.rule_is_new(session, subdomain, fallback_details["listener_arn"])
         if args.architect._deploy_type in ["retain", "standard"]:
             assert (

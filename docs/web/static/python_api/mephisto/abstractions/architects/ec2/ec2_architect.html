@@ -232,7 +232,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">server_detail_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_detail_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subdomain</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span>
-            <span class="n">profile_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">profile_name</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;us-east-2&quot;</span>
+            <span class="n">profile_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">profile_name</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;ap-southeast-2&quot;</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">server_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -329,7 +329,7 @@
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">REQUIRED_KEYS</span><span class="p">:</span>
             <span class="k">assert</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fallback_details</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Fallback file missing required key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span>
 
-        <span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="n">profile_name</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;us-east-2&quot;</span><span class="p">)</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="n">profile_name</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;ap-southeast-2&quot;</span><span class="p">)</span>
         <span class="k">assert</span> <span class="n">ec2_helpers</span><span class="o">.</span><span class="n">rule_is_new</span><span class="p">(</span>
             <span class="n">session</span><span class="p">,</span> <span class="n">subdomain</span><span class="p">,</span> <span class="n">fallback_details</span><span class="p">[</span><span class="s2">&quot;listener_arn&quot;</span><span class="p">]</span>
         <span class="p">),</span> <span class="s2">&quot;Rule was not new, existing subdomain found registered to the listener. Check on AWS.&quot;</span>
@@ -658,7 +658,7 @@ in ec2 resources</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">server_detail_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_detail_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subdomain</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span>
-            <span class="n">profile_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">profile_name</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;us-east-2&quot;</span>
+            <span class="n">profile_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">profile_name</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;ap-southeast-2&quot;</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">server_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -755,7 +755,7 @@ in ec2 resources</p>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">REQUIRED_KEYS</span><span class="p">:</span>
             <span class="k">assert</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fallback_details</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Fallback file missing required key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span>
 
-        <span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="n">profile_name</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;us-east-2&quot;</span><span class="p">)</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="n">profile_name</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;ap-southeast-2&quot;</span><span class="p">)</span>
         <span class="k">assert</span> <span class="n">ec2_helpers</span><span class="o">.</span><span class="n">rule_is_new</span><span class="p">(</span>
             <span class="n">session</span><span class="p">,</span> <span class="n">subdomain</span><span class="p">,</span> <span class="n">fallback_details</span><span class="p">[</span><span class="s2">&quot;listener_arn&quot;</span><span class="p">]</span>
         <span class="p">),</span> <span class="s2">&quot;Rule was not new, existing subdomain found registered to the listener. Check on AWS.&quot;</span>
@@ -964,7 +964,7 @@ in ec2 resources</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">server_detail_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_detail_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subdomain</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span>
-            <span class="n">profile_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">profile_name</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;us-east-2&quot;</span>
+            <span class="n">profile_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">profile_name</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;ap-southeast-2&quot;</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">server_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1146,7 +1146,7 @@ will need to register to in order to function</p>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">REQUIRED_KEYS</span><span class="p">:</span>
             <span class="k">assert</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fallback_details</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Fallback file missing required key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span>
 
-        <span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="n">profile_name</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;us-east-2&quot;</span><span class="p">)</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="n">profile_name</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;ap-southeast-2&quot;</span><span class="p">)</span>
         <span class="k">assert</span> <span class="n">ec2_helpers</span><span class="o">.</span><span class="n">rule_is_new</span><span class="p">(</span>
             <span class="n">session</span><span class="p">,</span> <span class="n">subdomain</span><span class="p">,</span> <span class="n">fallback_details</span><span class="p">[</span><span class="s2">&quot;listener_arn&quot;</span><span class="p">]</span>
         <span class="p">),</span> <span class="s2">&quot;Rule was not new, existing subdomain found registered to the listener. Check on AWS.&quot;</span>

@@ -130,7 +130,7 @@
     <span class="p">)</span>
     <span class="n">instance_type</span> <span class="o">=</span> <span class="n">FALLBACK_INSTANCE_TYPE</span> <span class="k">if</span> <span class="n">instance_type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">instance_type</span>
 
-    <span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="n">iam_profile</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;us-east-2&quot;</span><span class="p">)</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="n">iam_profile</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;ap-southeast-2&quot;</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">server_details_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">saved_details_file</span><span class="p">:</span>
@@ -370,7 +370,7 @@
     <span class="p">)</span>
     <span class="n">instance_type</span> <span class="o">=</span> <span class="n">FALLBACK_INSTANCE_TYPE</span> <span class="k">if</span> <span class="n">instance_type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">instance_type</span>
 
-    <span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="n">iam_profile</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;us-east-2&quot;</span><span class="p">)</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">profile_name</span><span class="o">=</span><span class="n">iam_profile</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s2">&quot;ap-southeast-2&quot;</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">server_details_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">saved_details_file</span><span class="p">:</span>

@@ -62,7 +62,7 @@ def launch_ec2_fallback(
     )
     instance_type = FALLBACK_INSTANCE_TYPE if instance_type is None else instance_type
 
-    session = boto3.Session(profile_name=iam_profile, region_name="us-east-2")
+    session = boto3.Session(profile_name=iam_profile, region_name="ap-southeast-2")
 
     try:
         with open(server_details_file, "r") as saved_details_file:
@@ -209,11 +209,11 @@ def launch_ec2_fallback(
 
 # TODO(CLEAN) Hydrize
 def main():
-    iam_role_name = 'mpt'
+    iam_role_name = 'deployer'
     print(iam_role_name)
     ec2_helpers.setup_ec2_credentials(iam_role_name)
 
-    domain_name = 'aufederal2022.com'
+    domain_name = 'dlab-mephisto.com'
     ssh_ip_block = '0.0.0.0/0'
     access_logs_key = 'test'
     print(domain_name, ssh_ip_block, access_logs_key)

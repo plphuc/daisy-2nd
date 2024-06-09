@@ -28,9 +28,9 @@ logger = get_logger(name=__name__)
 if TYPE_CHECKING:
     from omegaconf import DictConfig  # type: ignore
 
-botoconfig = Config(region_name="us-east-2", retries={"max_attempts": 10, "mode": "standard"})
+botoconfig = Config(region_name="ap-southeast-2", retries={"max_attempts": 10, "mode": "standard"})
 
-DEFAULT_AMI_ID = "ami-0f19d220602031aed"
+DEFAULT_AMI_ID = "ami-04a81599b183d7908"
 AMI_DEFAULT_USER = "ec2-user"
 DEFAULT_INSTANCE_TYPE = "m2.micro"
 FALLBACK_INSTANCE_TYPE = "t2.nano"
@@ -289,6 +289,7 @@ def create_mephisto_vpc(session: boto3.Session) -> Dict[str, str]:
 
     Currently sets up using US-east for both subnets
     """
+    
     client = session.client("ec2")
 
     # Create VPC
@@ -333,7 +334,7 @@ def create_mephisto_vpc(session: boto3.Session) -> Dict[str, str]:
             }
         ],
         CidrBlock="10.0.0.0/24",
-        AvailabilityZone="us-east-2a",
+        AvailabilityZone="ap-southeast-2a",
         VpcId=vpc_id,
     )
     subnet_1_id = subnet_1_response["Subnet"]["SubnetId"]
@@ -349,7 +350,7 @@ def create_mephisto_vpc(session: boto3.Session) -> Dict[str, str]:
             }
         ],
         CidrBlock="10.0.1.0/24",
-        AvailabilityZone="us-east-2b",
+        AvailabilityZone="ap-southeast-2b",
         VpcId=vpc_id,
     )
     subnet_2_id = subnet_2_response["Subnet"]["SubnetId"]
@@ -1091,7 +1092,7 @@ def cleanup_fallback_server(
     Optionally includes deleting the hosted zone, which remains
     an option due to the DNS changes required
     """
-    session = boto3.Session(profile_name=iam_profile, region_name="us-east-2")
+    session = boto3.Session(profile_name=iam_profile, region_name="ap-southeast-2")
 
     elb_client = session.client("elbv2")
     ec2_client = session.client("ec2")

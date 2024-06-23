@@ -115,6 +115,8 @@ def fill_registries():
 
 def get_crowd_provider_from_type(provider_type: str) -> Type["CrowdProvider"]:
     """Return the crowd provider class for the given string"""
+    print("provider type: ", provider_type)
+    print("PROVIDERS: ", PROVIDERS)
     if provider_type in PROVIDERS:
         return PROVIDERS[provider_type]
     else:

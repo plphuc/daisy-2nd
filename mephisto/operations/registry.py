@@ -20,6 +20,9 @@ BLUEPRINTS: Dict[str, Type["Blueprint"]] = {}
 ARCHITECTS: Dict[str, Type["Architect"]] = {}
 PROVIDERS: Dict[str, Type["CrowdProvider"]] = {}
 
+from mephisto.utils.logger_core import get_logger
+
+logger = get_logger(name=__name__)
 
 def register_mephisto_abstraction():
     """
@@ -115,8 +118,8 @@ def fill_registries():
 
 def get_crowd_provider_from_type(provider_type: str) -> Type["CrowdProvider"]:
     """Return the crowd provider class for the given string"""
-    print("provider type: ", provider_type)
-    print("PROVIDERS: ", PROVIDERS)
+    logger.info("provider type: ", provider_type)
+    logger.info("PROVIDERS: ", PROVIDERS)
     if provider_type in PROVIDERS:
         return PROVIDERS[provider_type]
     else:

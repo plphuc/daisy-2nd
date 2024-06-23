@@ -176,7 +176,7 @@ def get_certificate(session: boto3.Session, domain_name: str) -> Dict[str, str]:
     Gets the certificate for the given domain name, and returns
     the dns validation name and target and cert arn ('Name' and 'Value', 'arn')
     """
-    client = session.client("acm")
+    client = session.client("acm", region_name="ap-southeast-2")
     cert_domain_name = f"*.{domain_name}"
     certificate_arn = find_certificate_arn(session, cert_domain_name)
     if certificate_arn is None:  # cert not yet issued
@@ -227,7 +227,7 @@ def register_zone_records(
     Returns the change id
     """
     # Get details about the load balancer
-    ec2_client = session.client("elbv2")
+    ec2_client = session.client("elbv2", region_name="ap-southeast-2")
     balancer = ec2_client.describe_load_balancers(LoadBalancerArns=[load_balancer_arn],)[
         "LoadBalancers"
     ][0]
@@ -235,7 +235,7 @@ def register_zone_records(
     load_balancer_zone = balancer["CanonicalHostedZoneId"]
 
     # Create the records
-    client = session.client("route53")
+    client = session.client("route53", region_name="ap-southeast-2")
     response = client.change_resource_record_sets(
         HostedZoneId=zone_id,
         ChangeBatch={
@@ -290,7 +290,7 @@ def create_mephisto_vpc(session: boto3.Session) -> Dict[str, str]:
     Currently sets up using US-east for both subnets
     """
     
-    client = session.client("ec2")
+    client = session.client("ec2", region_name="ap-southeast-2")
 
     # Create VPC
     vpc_response = client.create_vpc(
@@ -421,7 +421,7 @@ def create_security_group(session: boto3.Session, vpc_id: str, ssh_ip: str) -> s
     Create a security group with public access
     for 80 and 443, but only access from ssh_ip (comma-separated) for 22
     """
-    client = session.client("ec2")
+    client = session.client("ec2", region_name="ap-southeast-2")
 
     create_response = client.create_security_group(
         Description="Security group used for Mephisto host servers",
@@ -542,7 +542,7 @@ def create_key_pair(
     if os.path.exists(target_keypair_filename):
         logger.warning(f"Keypair already exists! {target_keypair_filename}")
         return target_keypair_filename
-    client = session.client("ec2")
+    client = session.client("ec2", region_name="ap-southeast-2")
 
     response = client.create_key_pair(
         KeyName=key_name,
@@ -572,7 +572,7 @@ def create_instance(
     """
     Create an instance, return the instance id, allocation id, and association id
     """
-    client = session.client("ec2")
+    client = session.client("ec2", region_name="ap-southeast-2")
     instance_response = client.run_instances(
         BlockDeviceMappings=[
             {
@@ -640,7 +640,7 @@ def create_target_group(
     """
     Create a target group for the given instance
     """
-    client = session.client("elbv2")
+    client = session.client("elbv2", region_name="ap-southeast-2")
     group_name_hash = hashlib.md5(group_name.encode("utf-8")).hexdigest()
     anti_collision_group_name = f"{group_name_hash[:8]}-{group_name}"
     final_group_name = f"{anti_collision_group_name[:28]}-tg"
@@ -712,7 +712,7 @@ def register_instance_to_listener(
     """
     subdomain_root = domain.split(".")[0]
     target_group_arn = create_target_group(session, vpc_id, instance_id, subdomain_root)
-    client = session.client("elbv2")
+    client = session.client("elbv2", region_name="ap-southeast-2")
 
     find_rule_response = client.describe_rules(
         ListenerArn=listener_arn,
@@ -759,7 +759,7 @@ def create_load_balancer(
     """
     Creates a load balancer and returns the balancer's arn
     """
-    client = session.client("elbv2")
+    client = session.client("elbv2", region_name="ap-southeast-2")
 
     create_response = client.create_load_balancer(
         Name="mephisto-hosts-balancer",
@@ -784,7 +784,7 @@ def configure_base_balancer(
     of the listener to add rules to for redirecting to specified target groups
     """
 
-    client = session.client("elbv2")
+    client = session.client("elbv2", region_name="ap-southeast-2")
 
     _redirect_response = client.create_listener(
         LoadBalancerArn=balancer_arn,
@@ -834,7 +834,7 @@ def get_instance_address(
     Create a temporary publicly accessible IP for the given instance.
     Return the IP address, the allocation id, and the association id.
     """
-    client = session.client("ec2")
+    client = session.client("ec2", region_name="ap-southeast-2")
 
     allocation_response = client.allocate_address(
         Domain="vpc",
@@ -885,7 +885,7 @@ def detete_instance_address(
     """
     Removes the public ip described by the given allocation and association ids
     """
-    client = session.client("ec2")
+    client = session.client("ec2", region_name="ap-southeast-2")
     client.disassociate_address(
         AssociationId=association_id,
     )
@@ -924,7 +924,7 @@ def deploy_fallback_server(
     Deploy the fallback server to the given instance,
     return True if successful
     """
-    client = session.client("ec2")
+    client = session.client("ec2", region_name="ap-southeast-2")
     server_host, allocation_id, association_id = get_instance_address(session, instance_id)
     try:
         keypair_file = os.path.join(DEFAULT_KEY_PAIR_DIRECTORY, f"{key_pair}.pem")
@@ -975,7 +975,7 @@ def deploy_to_routing_server(
     key_pair: str,
     push_directory: str,
 ) -> bool:
-    client = session.client("ec2")
+    client = session.client("ec2", region_name="ap-southeast-2")
     server_host, allocation_id, association_id = get_instance_address(session, instance_id)
     keypair_file = os.path.join(DEFAULT_KEY_PAIR_DIRECTORY, f"{key_pair}.pem")
 
@@ -1026,7 +1026,7 @@ def delete_rule(
     """
     Remove the given rule and the target group for this rule
     """
-    client = session.client("elbv2")
+    client = session.client("elbv2", region_name="ap-southeast-2")
     client.delete_rule(
         RuleArn=rule_arn,
     )
@@ -1043,7 +1043,7 @@ def delete_instance(
     """
     Remove the given instance and the associated elastic ip
     """
-    client = session.client("ec2")
+    client = session.client("ec2", region_name="ap-southeast-2")
     client.terminate_instances(InstanceIds=[instance_id])
 
 
@@ -1073,7 +1073,7 @@ def delete_listener(
     session: boto3.Session,
     listener_arn: str,
 ) -> None:
-    client = session.client("elbv2")
+    client = session.client("elbv2", region_name="ap-southeast-2")
     client.delete_listener(
         ListenerArn=listener_arn,
     )
@@ -1094,8 +1094,8 @@ def cleanup_fallback_server(
     """
     session = boto3.Session(profile_name=iam_profile, region_name="ap-southeast-2")
 
-    elb_client = session.client("elbv2")
-    ec2_client = session.client("ec2")
+    elb_client = session.client("elbv2", region_name="ap-southeast-2")
+    ec2_client = session.client("ec2", region_name="ap-southeast-2")
 
     server_details_file = (
         DEFAULT_FALLBACK_FILE if server_details_file is None else server_details_file
@@ -1172,7 +1172,7 @@ def cleanup_fallback_server(
     if delete_hosted_zone:
         hosted_zone_id = details.get("hosted_zone_id")
         if hosted_zone_id is not None:
-            route53_client = session.client("route53")
+            route53_client = session.client("route53", region_name="ap-southeast-2")
             print(
                 "Deleting hosted zones not yet implemented, "
                 "navigate to the AWS Route53 console to complete "

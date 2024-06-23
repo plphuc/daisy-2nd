@@ -23,7 +23,7 @@ from botocore.config import Config  # type: ignore
 from mephisto.utils.logger_core import get_logger
 
 logger = get_logger(name=__name__)
-
+os.environ['AWS_DEFAULT_REGION'] = 'ap-southeast-2'
 
 if TYPE_CHECKING:
     from omegaconf import DictConfig  # type: ignore
@@ -82,7 +82,7 @@ def get_domain_if_available(session: boto3.Session, domain_name: str) -> bool:
 
     Pricing is available on amazon
     """
-    client = session.client("route53domains")
+    client = session.client("route53domains", region_name="ap-southeast-2")
     avail_result = "PENDING"
 
     while avail_result == "PENDING":
@@ -111,7 +111,7 @@ def find_hosted_zone(session: boto3.Session, domain_name: str) -> Optional[str]:
     search for a hosted zone with the given name, return its id
     if found and None otherwise
     """
-    client = session.client("route53")
+    client = session.client("route53", region_name="ap-southeast-2")
 
     zones = client.list_hosted_zones_by_name()
 
@@ -128,7 +128,7 @@ def create_hosted_zone(session: boto3.Session, domain_name: str) -> str:
     Given a domain name, tries to create a hosted zone
     for that domain. Returns the hosted zone id
     """
-    client = session.client("route53")
+    client = session.client("route53", region_name="ap-southeast-2")
 
     zone_id = find_hosted_zone(session, domain_name)
     if zone_id is None:
@@ -162,7 +162,7 @@ def find_certificate_arn(session: boto3.Session, domain_name: str) -> Optional[s
     Finds the certificate for the given domain if it exists, and returns
     the certification arn.
     """
-    client = session.client("acm")
+    client = session.client("acm", region_name="ap-southeast-2")
     certs = client.list_certificates()
     logger.debug(f"Found existing certs: {certs}")
     for cert in certs["CertificateSummaryList"]:
@@ -680,7 +680,7 @@ def rule_is_new(
     """
     Check to see if a rule already exists with the given subdomain
     """
-    client = session.client("elbv2")
+    client = session.client("elbv2", region_name="ap-southeast-2")
     find_rule_response = client.describe_rules(
         ListenerArn=listener_arn,
     )

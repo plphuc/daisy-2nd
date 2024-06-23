@@ -389,6 +389,6 @@ class MTurkDatastore:
         """
         return self.get_session_for_requester(requester_name).client(
             service_name="mturk",
-            region_name="ap-southeast-1",
-            endpoint_url="https://mturk-requester-sandbox.us-east-1.amazonaws.com",
+            region_name="ap-southeast-2",
+            endpoint_url="https://mturk-requester-sandbox.ap-southeast-2.amazonaws.com",
         )

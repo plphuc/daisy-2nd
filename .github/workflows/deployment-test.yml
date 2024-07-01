@@ -27,7 +27,6 @@ jobs:
     name: build-container
     runs-on: ubuntu-latest
     steps:
-        working-directory: ./mephisto
       - name: Authorize AWS
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -43,6 +42,8 @@ jobs:
 
       - name: Checkout current branch
         uses: actions/checkout@v4
+        with: 
+          working-directory: ./mephisto
 
       - name: Build and publish image into ECR, then start the service
         uses: cngthnh/serverless-mephisto@alpha-2

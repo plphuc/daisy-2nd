@@ -24,7 +24,7 @@ from . import mturk_datastore_tables as tables
 from .migrations import migrations
 from .mturk_datastore_export import export_datastore
 
-MTURK_REGION_NAME = "ap-southeast-1"
+MTURK_REGION_NAME = "us-east-1"
 
 logger = get_logger(name=__name__)
 

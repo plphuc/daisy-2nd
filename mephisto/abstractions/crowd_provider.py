@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 class ProviderArgs:
     """Base class for arguments to configure Crowd Providers"""
 
-    _provider_type: str = 'mturk_sandbox'
+    _provider_type: str = MISSING
     requester_name: str = MISSING
 
 

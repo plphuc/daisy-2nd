@@ -117,7 +117,7 @@ def get_crowd_provider_from_type(provider_type: str) -> Type["CrowdProvider"]:
     if provider_type in PROVIDERS:
         return PROVIDERS[provider_type]
     else:
-        raise NotImplementedError(f"Missing provider type {provider_type}, is it registered bro? {PROVIDERS}")
+        raise NotImplementedError(f"Missing provider type {provider_type}, is it registered?")
 
 
 def get_blueprint_from_type(task_type: str) -> Type["Blueprint"]:

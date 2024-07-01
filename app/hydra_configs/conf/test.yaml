@@ -10,7 +10,7 @@ mephisto:
     profile_name: mpt
     subdomain: "mpt-t.mpt"
   provider:
-    requester_name: my_mturk_user
+    requester_name: my_mturk_user_sandbox
   blueprint:
     data_json: ${task_dir}/data.json
     task_source: ${task_dir}/webapp/build/bundle.js
